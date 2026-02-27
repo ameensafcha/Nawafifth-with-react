@@ -1,172 +1,157 @@
+import { useLayoutEffect, useRef } from 'react';
 import { motion } from 'motion/react';
 import { ChevronRight } from 'lucide-react';
+import gsap from 'gsap';
 import { useLanguage } from '../../context/LanguageContext';
+import TextType from '../ui/TextType';
+import SplitText from '../ui/SplitText';
 
-// REUSABLE DATA
 const marqueeData = [
-  "Dynamic Displays",
-  "Real-time Analytics",
-  "Geo-Targeting",
-  "Audience Measurement",
-  "Programmatic DOOH",
-  "Smart Bidding"
+  "Dynamic Displays", "Real-time Analytics", "Geo-Targeting",
+  "Audience Measurement", "Programmatic DOOH", "Smart Bidding"
 ];
 
-// Screen bhari rahe isliye array ko duplicate kiya hai
-const displayItems = [...marqueeData, ...marqueeData, ...marqueeData, ...marqueeData];
+const displayItems = [...marqueeData, ...marqueeData];
 
 export default function Hero() {
   const { t, isRTL } = useLanguage();
+  const scope = useRef(null);
+  const marqueeRef = useRef(null);
+
+  useLayoutEffect(() => {
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({
+        defaults: { ease: "expo.out", duration: 1.2 }
+      });
+
+      // Reset & Initial States
+      gsap.set(".hero-content > *", { x: isRTL ? 50 : -50, opacity: 0 });
+      gsap.set(".video-container", { scale: 0.9, opacity: 0 });
+      gsap.set(".marquee-bar", { y: 50, opacity: 0 });
+
+      // Timeline Sequence
+      tl.to(".hero-content > *", {
+        x: 0,
+        opacity: 1,
+        stagger: 0.1,
+        ease: "power4.out"
+      })
+        .to(".video-container", {
+          scale: 1,
+          opacity: 1,
+          duration: 1.5
+        }, "-=0.8")
+        .to(".marquee-bar", {
+          y: 0,
+          opacity: 1,
+          duration: 0.8
+        }, "-=1");
+
+      // Seamless Marquee Animation
+      const marqueeWidth = marqueeRef.current.offsetWidth / 2;
+      gsap.to(marqueeRef.current, {
+        x: isRTL ? marqueeWidth : -marqueeWidth,
+        duration: 30,
+        repeat: -1,
+        ease: "none",
+        modifiers: {
+          x: gsap.utils.unitize(x => parseFloat(x) % marqueeWidth)
+        }
+      });
+    }, scope);
+
+    return () => ctx.revert();
+  }, [isRTL]);
 
   return (
-    <>
-      {/* Custom CSS - RTL Logic Added Here */}
-      <style>
-        {`
-          /* LTR ke liye (Left ki taraf jayega) */
-          @keyframes infinite-scroll-seamless-ltr {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-          }
-          /* RTL ke liye (Right ki taraf jayega) */
-          @keyframes infinite-scroll-seamless-rtl {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(50%); }
-          }
-          
-          .scrolling-wrapper {
-            display: flex;
-            width: max-content;
-            /* isRTL true hone par RTL wali animation chalegi */
-            animation: ${isRTL ? 'infinite-scroll-seamless-rtl' : 'infinite-scroll-seamless-ltr'} 60s linear infinite;
-          }
-          
-          .marquee-container:hover .scrolling-wrapper {
-            animation-play-state: paused;
-          }
-        `}
-      </style>
+    <section ref={scope} className="relative min-h-[100dvh] lg:flex lg:items-center overflow-x-hidden bg-[#0a0a0a] pt-32 pb-40 lg:pt-16 lg:pb-0">
 
-      <section className="relative min-h-screen flex items-center overflow-hidden bg-brand-black pt-20 lg:pt-24">
-        {/* Background Section */}
-        <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-gradient-to-b from-brand-black/80 via-brand-black/40 to-brand-black z-10"></div>
-          <div className="absolute inset-0 bg-gradient-to-r from-brand-black via-brand-black/20 to-transparent z-10"></div>
-          <img 
-            src="https://picsum.photos/seed/city-night/1920/1080?blur=4" 
-            alt="City Night" 
-            className="w-full h-full object-cover opacity-30"
-            referrerPolicy="no-referrer"
-          />
-        </div>
-        
-        {/* Main Content Container */}
-        <div className="relative z-20 w-full max-w-[1600px] mx-auto px-4 md:px-12 lg:px-20 pt-8 pb-32 lg:pt-12 lg:pb-36">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 xl:gap-16 items-center">
-            
-            {/* TEXT SECTION */}
-            <div className={`w-full lg:col-span-5 xl:col-span-5 space-y-6 md:space-y-8 ${isRTL ? 'text-right' : 'text-left'}`} dir={isRTL ? 'rtl' : 'ltr'}>
-              <div className="space-y-4">
-                <motion.div
-                  initial={{ opacity: 0, x: isRTL ? 20 : -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  className="flex items-center gap-4"
-                >
-                  <span className="w-12 h-px bg-white/20"></span>
-                  <span className="text-xs uppercase tracking-[0.6em] font-bold text-white/40" dir={isRTL ? 'rtl' : 'ltr'}>
-                    {t.hero.welcomeTo}
-                  </span>
-                </motion.div>
-                
-                <motion.h1 
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2, duration: 0.8 }}
-                  className="text-5xl sm:text-6xl md:text-7xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold leading-[1.1] md:leading-[1] tracking-tighter text-white font-display break-words"
-                  dir={isRTL ? 'rtl' : 'ltr'}
-                >
-                  {t.hero.title}
-                </motion.h1>
-              </div>
-              
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4, duration: 0.8 }}
-                className="space-y-6"
-              >
-                <p className="text-base sm:text-lg md:text-xl text-gray-400 max-w-xl mx-auto lg:mx-0 leading-relaxed font-light" dir={isRTL ? 'rtl' : 'ltr'} style={{ textAlign: isRTL ? 'right' : 'left' }}>
-                  {t.hero.subtitle} <span className="text-white font-medium">{t.hero.onCar}</span>. 
-                  {t.hero.description}
-                </p>
-                
-                <div className={`flex flex-col sm:flex-row gap-4 ${isRTL ? 'justify-end' : 'justify-start'}`}>
-                  <motion.button 
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="btn-primary flex items-center justify-center gap-2 group px-8 py-4 text-sm"
-                  >
-                    {t.hero.scheduleCall}
-                    <ChevronRight size={18} className={`group-hover:translate-x-1 transition-transform ${isRTL ? 'rotate-180' : ''}`} />
-                  </motion.button>
-                </div>
-              </motion.div>
+      {/* Background Overlay */}
+      <div className="absolute inset-0 z-0">
+        <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black z-10" />
+        <img
+          src="https://images.unsplash.com/photo-1519501025264-65ba15a82390?q=80&w=2000"
+          className="w-full h-full object-cover opacity-20"
+          alt="bg"
+        />
+      </div>
+
+      <div className="relative z-20 w-full max-w-[1440px] mx-auto px-6 md:px-12 lg:px-20 mb-20 lg:mb-0">
+        {/* IsRTL switch for Grid Order */}
+        <div className={`grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-12 items-center ${isRTL ? 'direction-rtl' : 'direction-ltr'}`}>
+
+          {/* TEXT CONTENT */}
+          <div
+            className={`hero-content space-y-6 md:space-y-8 ${isRTL ? 'lg:order-2 text-right' : 'lg:order-1 text-left'}`}
+            style={{ direction: isRTL ? 'rtl' : 'ltr' }}
+          >
+            <div className={`flex items-center gap-4 ${isRTL ? 'justify-start' : 'justify-start'}`}>
+              <span className="w-8 md:w-12 h-[1px] bg-white/30" />
+              <TextType
+                text={[t.hero.welcomeTo, "Nawafith Advertising"]}
+                className="text-[9px] md:text-[10px] uppercase tracking-[0.4em] text-white/50 font-bold"
+              />
             </div>
 
-            {/* VIDEO SECTION */}
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.6, duration: 1 }}
-              className="w-full lg:col-span-7 xl:col-span-7 mt-8 lg:mt-0"
-            >
-              <div className="relative z-10 rounded-2xl lg:rounded-[2rem] overflow-hidden shadow-2xl border-[4px] border-white/20 bg-brand-gray w-full max-w-full mx-auto">
-                <div className="aspect-[16/9]">
-                  <video 
-                    autoPlay 
-                    muted 
-                    loop 
-                    playsInline
-                    className="w-full h-full object-cover"
-                  >
-                    <source src="/video/1.mp4" type="video/mp4" />
-                    Your browser does not support the video tag.
-                  </video>
-                  <div className="absolute inset-0 bg-gradient-to-t from-brand-black/60 via-transparent to-transparent pointer-events-none"></div>
-                </div>
+            <h1 className="text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-black text-white leading-[1.1] tracking-tight">
+              <SplitText
+                text={t.hero.title}
+                className="inline-block"
+                animation="slide"
+                stagger={0.05}
+              />
+            </h1>
 
-                <div className="absolute -top-10 -right-10 w-32 h-32 lg:w-48 lg:h-48 bg-white/5 rounded-full blur-[80px] pointer-events-none"></div>
-                <div className="absolute -bottom-10 -left-10 w-32 h-32 lg:w-48 lg:h-48 bg-white/5 rounded-full blur-[80px] pointer-events-none"></div>
-              </div>
-            </motion.div>
-            
+            <p className="text-base md:text-lg lg:text-xl text-gray-400 max-w-xl leading-relaxed">
+              {t.hero.subtitle} <span className="text-white font-semibold underline decoration-white/20 underline-offset-8">{t.hero.onCar}</span>.
+              <span className="block mt-4 text-xs md:text-sm opacity-60">{t.hero.description}</span>
+            </p>
+
+            <div className={`flex items-center ${isRTL ? 'justify-start' : 'justify-start'}`}>
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="bg-white text-black px-6 md:px-10 py-3 md:py-4 rounded-full text-sm md:text-base font-bold flex items-center gap-3 group transition-shadow hover:shadow-[0_0_30px_rgba(255,255,255,0.2)]"
+              >
+                {t.hero.scheduleCall}
+                <ChevronRight size={20} className={`transition-transform group-hover:translate-x-1 ${isRTL ? 'rotate-180' : ''}`} />
+              </motion.button>
+            </div>
           </div>
-        </div>
 
-        {/* POORI BAR PAR CLASS "marquee-container" ADD KI HAI (Yahan bhi dynamic dir laga diya hai) */}
-        <div 
-          className="marquee-container absolute bottom-0 left-0 w-full overflow-hidden py-3 sm:py-4 border-t border-white/5 bg-white/[0.02] backdrop-blur-sm z-30"
-          dir={isRTL ? 'rtl' : 'ltr'} 
-        >
-          <div className="scrolling-wrapper">
-            
-            {/* Endless loop blocks */}
-            {[...Array(2)].map((_, arrayIndex) => (
-              <div key={arrayIndex} className="flex">
-                {displayItems.map((item, index) => (
-                  <div key={index} className="flex items-center gap-6 sm:gap-8 px-6 sm:px-10 cursor-default">
-                    <span className="text-[9px] sm:text-[10px] uppercase tracking-[0.4em] sm:tracking-[0.5em] font-bold text-white/20 transition-colors duration-300 hover:text-white/60">
-                      {item}
-                    </span>
-                    <div className="w-1 h-1 rounded-full bg-white/20"></div>
-                  </div>
-                ))}
+          {/* VIDEO CONTAINER */}
+          <div className={`video-container w-full ${isRTL ? 'lg:order-1' : 'lg:order-2'}`}>
+            <div className="relative rounded-3xl md:rounded-[2.5rem] overflow-hidden border border-white/10 bg-zinc-900 shadow-2xl">
+              <div className="aspect-video relative">
+                <video autoPlay muted loop playsInline className="w-full h-full object-cover">
+                  <source src="/video/1.mp4" type="video/mp4" />
+                </video>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
               </div>
-            ))}
-
+            </div>
           </div>
+
         </div>
-      </section>
-    </>
+      </div>
+
+      {/* MARQUEE BAR */}
+      <div className="marquee-bar absolute bottom-0 left-0 w-full py-6 md:py-8 border-t border-white/5 bg-black/80 md:bg-black/60 backdrop-blur-xl z-30">
+        <div ref={marqueeRef} className="flex whitespace-nowrap will-change-transform">
+          {[...displayItems, ...displayItems].map((item, index) => (
+            <div key={index} className="flex items-center gap-6 md:gap-10 px-6 md:px-10">
+              <span className="text-[9px] md:text-[11px] uppercase tracking-[0.3em] md:tracking-[0.4em] font-bold text-white/40 hover:text-white/80 transition-colors">
+                {item}
+              </span>
+              <div className="w-1 md:w-1.5 h-1 md:h-1.5 rounded-full bg-white/20" />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <style jsx>{`
+        .direction-rtl { direction: rtl; }
+        .direction-ltr { direction: ltr; }
+      `}</style>
+    </section>
   );
 }

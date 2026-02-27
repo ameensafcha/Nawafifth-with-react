@@ -1,12 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useLayoutEffect, useRef } from 'react';
+import gsap from 'gsap';
 import { useLanguage } from '../../context/LanguageContext';
-
-// ==========================================
-// 1. DATA & CONTROLS
-// ==========================================
-
-const PAUSE_TIME_MS = 2000;   // 2 second rukega
-const SLIDE_SPEED_MS = 500;   // 0.5 sec slide speed
 
 const clientLogos = [
   "https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg",
@@ -15,114 +9,99 @@ const clientLogos = [
   "https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg",
   "https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg",
   "https://upload.wikimedia.org/wikipedia/commons/2/24/Samsung_Logo.svg",
+  "https://upload.wikimedia.org/wikipedia/commons/b/b5/SAP_logo.svg",
+  "https://upload.wikimedia.org/wikipedia/commons/d/df/Oracle_logo.svg",
 ];
 
-const displayLogos = [...clientLogos, ...clientLogos, ...clientLogos];
-
-// ==========================================
-// COMPONENT
-// ==========================================
+// Double the logos for seamless loop
+const displayLogos = [...clientLogos, ...clientLogos];
 
 export default function ClientsCarousel() {
   const { isRTL } = useLanguage();
-  const titleText = isRTL ? 'عملاؤنا' : 'Clients Worked With';
+  const titleText = isRTL ? 'شركاء النجاح' : 'Our Trusted Partners';
+  const marqueeRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isTransitioning, setIsTransitioning] = useState(true);
-  const [isHovered, setIsHovered] = useState(false);
+  useLayoutEffect(() => {
+    const ctx = gsap.context(() => {
+      if (!marqueeRef.current) return;
 
-  useEffect(() => {
-    if (isHovered) return;
+      const marquee = marqueeRef.current;
 
-    const timer = setInterval(() => {
-      setIsTransitioning(true);
-      setCurrentIndex((prev) => prev + 1);
-    }, PAUSE_TIME_MS);
+      // Ensure we have a clean start using xPercent
+      gsap.set(marquee, { xPercent: 0, x: 0 });
 
-    return () => clearInterval(timer);
-  }, [isHovered]);
+      // Move exactly 50% of its own total width to perfectly loop the doubled array
+      const animation = gsap.to(marquee, {
+        xPercent: isRTL ? 50 : -50,
+        duration: 40,
+        repeat: -1,
+        ease: "none",
+      });
 
-  const handleTransitionEnd = () => {
-    if (currentIndex >= clientLogos.length) {
-      setIsTransitioning(false);
-      setCurrentIndex(0);
-    }
-  };
+      // Pause/Slow on hover
+      const onEnter = () => gsap.to(animation, { timeScale: 0.1, duration: 1, ease: "power2.out" });
+      const onLeave = () => gsap.to(animation, { timeScale: 1, duration: 1, ease: "power2.inOut" });
 
-  // NATIVE RTL LOGIC: LTR me left (-1), RTL me right (1) slide karega
-  const slideDirection = isRTL ? 1 : -1;
-  const transformValue = `translateX(calc(${slideDirection} * ${currentIndex} * 100% / var(--visible-items)))`;
+      marquee.addEventListener("mouseenter", onEnter);
+      marquee.addEventListener("mouseleave", onLeave);
+
+      return () => {
+        marquee.removeEventListener("mouseenter", onEnter);
+        marquee.removeEventListener("mouseleave", onLeave);
+      };
+    }, containerRef);
+
+    return () => ctx.revert();
+  }, [isRTL]);
 
   return (
-    <section 
-      className="relative py-20 md:py-28 bg-brand-black border-t border-white/5 overflow-hidden"
+    <section
+      ref={containerRef}
+      className="relative py-20 md:py-32 bg-[#050505] overflow-hidden border-y border-white/[0.03]"
       dir={isRTL ? 'rtl' : 'ltr'}
     >
-      {/* Background Glows */}
-      <div className="absolute top-0 left-1/4 w-96 h-96 bg-white/[0.02] rounded-full blur-[100px] pointer-events-none"></div>
-      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-white/[0.02] rounded-full blur-[100px] pointer-events-none"></div>
+      {/* Refined Background Accents */}
+      <div className="absolute top-1/2 left-0 -translate-y-1/2 w-[300px] md:w-[600px] h-[300px] md:h-[600px] bg-white/[0.015] rounded-full blur-[100px] pointer-events-none"></div>
+      <div className="absolute top-1/2 right-0 -translate-y-1/2 w-[300px] md:w-[600px] h-[300px] md:h-[600px] bg-white/[0.015] rounded-full blur-[100px] pointer-events-none"></div>
 
-      <style>
-        {`
-          .carousel-track {
-            display: flex;
-            --visible-items: 2; /* Mobile */
-          }
-          @media (min-width: 640px) {
-            .carousel-track { --visible-items: 3; } /* Tablet */
-          }
-          @media (min-width: 1024px) {
-            .carousel-track { --visible-items: 5; } /* PC */
-          }
-          .carousel-item {
-            flex: 0 0 calc(100% / var(--visible-items));
-            min-width: calc(100% / var(--visible-items));
-          }
-        `}
-      </style>
-
-      {/* TITLE SECTION: Flex justify-start naturally pushes to RIGHT in RTL mode */}
-      <div className="max-w-[1600px] mx-auto px-4 md:px-12 lg:px-20 mb-12 md:mb-16 relative z-20">
-        <div className="flex items-center justify-start gap-4">
-          <span className="w-12 h-px bg-white/20"></span>
-          <h2 className="text-xs md:text-sm font-bold text-white/40 uppercase tracking-[0.6em]">
+      <div className="max-w-[1600px] mx-auto px-6 md:px-12 lg:px-20 mb-12 md:mb-16 relative z-20">
+        <div className="flex items-center gap-6">
+          <span className="w-12 md:w-24 h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent"></span>
+          <h2 className="text-[10px] md:text-xs font-display font-medium text-white/40 uppercase tracking-[0.4em] md:tracking-[0.6em]">
             {titleText}
           </h2>
+          <span className="flex-grow h-[1px] bg-gradient-to-r from-white/5 to-transparent"></span>
         </div>
       </div>
 
-      {/* SLIDER SECTION */}
-      <div 
-        className="relative w-full overflow-hidden z-20"
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-      > 
-        
-        {/* Gradients dynamically switch sides based on language */}
-        <div className={`absolute inset-y-0 ${isRTL ? 'right-0 bg-gradient-to-l' : 'left-0 bg-gradient-to-r'} w-20 md:w-40 from-brand-black to-transparent z-10 pointer-events-none`}></div>
-        <div className={`absolute inset-y-0 ${isRTL ? 'left-0 bg-gradient-to-r' : 'right-0 bg-gradient-to-l'} w-20 md:w-40 from-brand-black to-transparent z-10 pointer-events-none`}></div>
+      <div className="relative w-full z-20 group">
+        {/* Edge Fade Overlays */}
+        <div className="absolute inset-y-0 left-0 w-16 md:w-48 bg-gradient-to-r from-[#050505] to-transparent z-10 pointer-events-none"></div>
+        <div className="absolute inset-y-0 right-0 w-16 md:w-48 bg-gradient-to-l from-[#050505] to-transparent z-10 pointer-events-none"></div>
 
-        {/* Moving Track */}
-        <div 
-          className="carousel-track items-center"
-          style={{
-            transform: transformValue,
-            transition: isTransitioning ? `transform ${SLIDE_SPEED_MS}ms cubic-bezier(0.25, 1, 0.5, 1)` : 'none',
-          }}
-          onTransitionEnd={handleTransitionEnd}
+        <div
+          ref={marqueeRef}
+          className="flex items-center will-change-transform py-4"
+          style={{ width: 'max-content' }}
         >
           {displayLogos.map((logo, index) => (
-            <div key={index} className="carousel-item flex justify-center px-6 md:px-10">
-              <img 
-                src={logo} 
-                alt="Client Logo" 
-                className="max-h-8 md:max-h-12 w-auto object-contain filter grayscale opacity-30 transition-all duration-500 hover:grayscale-0 hover:opacity-100 hover:scale-110 cursor-pointer"
-              />
+            <div key={index} className="flex-none px-4 md:px-8 group/item">
+              <div className="relative w-28 h-16 md:w-44 md:h-24 rounded-xl md:rounded-[2.5rem] border border-white/[0.05] bg-white/[0.01] backdrop-blur-md flex items-center justify-center transition-all duration-700 hover:bg-white/[0.05] hover:border-white/20 active:scale-95">
+                <img
+                  src={logo}
+                  alt="Client Logo"
+                  className="max-h-5 md:max-h-9 w-auto object-contain filter grayscale brightness-200 opacity-20 transition-all duration-700 group-hover/item:grayscale-0 group-hover/item:brightness-100 group-hover/item:opacity-70 group-hover/item:scale-105"
+                />
+                <div className="absolute inset-0 rounded-xl md:rounded-[2.5rem] bg-white/5 opacity-0 group-hover/item:opacity-100 blur-lg transition-opacity duration-700 pointer-events-none"></div>
+              </div>
             </div>
           ))}
         </div>
-
       </div>
+
+      {/* Decorative Progress Blur Bottom */}
+      <div className="mt-12 md:mt-20 w-full h-[1px] bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.03),transparent_80%)]"></div>
     </section>
   );
 }

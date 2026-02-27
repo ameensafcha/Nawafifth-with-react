@@ -10,7 +10,7 @@ export const en: Translations = {
   },
   hero: {
     welcomeTo: 'Welcome to',
-    title: 'Nawafith Advertising',
+    title: 'Nawafith\nAdvertising',
     subtitle: 'Welcome to Nawafith Advertising, where innovative',
     onCar: 'On-Car Advertising',
     description: 'meets impactful brand visibility. Through eye-catching vehicle displays, we drive your brand forward—literally.',
