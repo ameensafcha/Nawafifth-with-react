@@ -1,3 +1,4 @@
+import React from 'react';
 import { useLayoutEffect, useRef, useEffect } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -112,7 +113,7 @@ export default function CTA() {
   return (
     <section 
       ref={sectionRef} 
-      className="relative py-16 md:py-24 overflow-hidden flex items-center justify-center min-h-[60vh] bg-brand-black cursor-default"
+      className="relative py-8 md:py-12 overflow-hidden flex items-center justify-center min-h-[50vh] bg-brand-black cursor-default"
     >
       {/* Dynamic Cursor Spotlight */}
       <div 

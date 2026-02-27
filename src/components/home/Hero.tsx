@@ -148,7 +148,7 @@ export default function Hero() {
         </div>
       </div>
 
-      <style jsx>{`
+      <style>{`
         .direction-rtl { direction: rtl; }
         .direction-ltr { direction: ltr; }
       `}</style>

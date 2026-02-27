@@ -6,6 +6,7 @@ import CTA from '../components/home/CTA';
 import Solutions from '../components/home/Solutions';
 import CTA2 from '../components/home/CTA2';
 import Leverage from '../components/home/Leverage';
+import FooterImage from '../components/home/FooterImage';
 
 export default function HomePage() {
   return (
@@ -22,9 +23,7 @@ export default function HomePage() {
       <Solutions />
       <Leverage />
       <CTA2 />
-      <div className="section-container">
-        <img src="https://picsum.photos/seed/footer-taxi/1200/600" alt="Taxis" className="w-full rounded-3xl shadow-2xl" referrerPolicy="no-referrer" />
-      </div>
+      <FooterImage/>
     </motion.div>
   );
 }

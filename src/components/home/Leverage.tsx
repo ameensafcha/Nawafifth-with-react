@@ -130,7 +130,7 @@ export default function Leverage() {
             >
               <img 
                 ref={imageRef}
-                src="https://picsum.photos/seed/leverage/1200/800" 
+                src="/images/hero3.jpg" 
                 alt="Leverage Strategy" 
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-[1.5s] ease-out" 
                 referrerPolicy="no-referrer" 
