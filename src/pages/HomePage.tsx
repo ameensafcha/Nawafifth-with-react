@@ -1,29 +1,33 @@
-import { motion, AnimatePresence } from 'motion/react';
 import Hero from '../components/home/Hero';
 import Clients from '../components/home/Clients';
 import Mission from '../components/home/Mission';
 import CTA from '../components/home/CTA';
 import Solutions from '../components/home/Solutions';
-import CTA2 from '../components/home/CTA2';
 import Leverage from '../components/home/Leverage';
 import FooterImage from '../components/home/FooterImage';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function HomePage() {
+  const { isRTL } = useLanguage();
+
   return (
-    <motion.div
-      key="home"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-    >
+    <div className={`page-wrapper ${isRTL ? 'rtl' : 'ltr'}`}>
       <Hero />
       <Clients />
       <Mission />
-      <CTA />
+      {/* 
+        Consolidated CTA handles multiple variants. 
+        Using different titles/subtitles for different sections if needed.
+      */}
+      <CTA
+        variant="boost"
+      />
       <Solutions />
       <Leverage />
-      <CTA2 />
-      <FooterImage/>
-    </motion.div>
+      <CTA
+        variant="elevate"
+      />
+      <FooterImage />
+    </div>
   );
 }

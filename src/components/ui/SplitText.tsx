@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useLayoutEffect, useRef } from 'react';
 import gsap from 'gsap';
 
 interface SplitTextProps {
@@ -17,60 +17,45 @@ const SplitText = ({
   text,
   className = '',
   animation = 'fade',
-  stagger = 0.02,
+  stagger = 0.03,
   delay = 0,
   duration = 0.8,
   from = 'bottom'
 }: SplitTextProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!containerRef.current) return;
 
     const chars = containerRef.current.querySelectorAll('.char');
-    
-    const getFrom = () => {
+
+    // Define the 'from' properties
+    const getFromProps = () => {
       switch (from) {
-        case 'top': return { y: -50, opacity: 0 };
-        case 'bottom': return { y: 50, opacity: 0 };
-        case 'left': return { x: -50, opacity: 0 };
-        case 'right': return { x: 50, opacity: 0 };
-        default: return { y: 50, opacity: 0 };
+        case 'top': return { y: -30, opacity: 0 };
+        case 'bottom': return { y: 30, opacity: 0 };
+        case 'left': return { x: -30, opacity: 0 };
+        case 'right': return { x: 30, opacity: 0 };
+        default: return { y: 20, opacity: 0 };
       }
     };
 
-    const getAnimation = (index: number) => {
+    const getAnimProps = () => {
       switch (animation) {
-        case 'fade':
-          return { opacity: 0, duration };
-        case 'slide':
-          return { ...getFrom(), duration };
-        case 'scale':
-          return { scale: 0, opacity: 0, duration };
-        case 'wave':
-          return { 
-            y: index % 2 === 0 ? -30 : 30, 
-            opacity: 0, 
-            duration,
-            ease: 'power2.out'
-          };
-        default:
-          return { opacity: 0, duration };
+        case 'fade': return { opacity: 0 };
+        case 'slide': return getFromProps();
+        case 'scale': return { scale: 0.5, opacity: 0 };
+        case 'wave': return { y: 20, opacity: 0 };
+        default: return { opacity: 0 };
       }
     };
 
-    gsap.fromTo(chars, 
-      { opacity: 0 },
-      { 
-        opacity: 1, 
-        duration: 0.1,
-        stagger: stagger,
-        delay: delay,
-      }
-    );
+    // Kill any existing animations to prevent conflicts
+    gsap.killTweensOf(chars);
 
+    // Single unified animation for better performance
     gsap.fromTo(chars,
-      getFrom(),
+      getAnimProps(),
       {
         x: 0,
         y: 0,
@@ -79,21 +64,22 @@ const SplitText = ({
         duration: duration,
         stagger: stagger,
         delay: delay,
-        ease: 'power3.out'
+        ease: animation === 'wave' ? 'back.out(1.7)' : 'power3.out',
+        overwrite: 'auto'
       }
     );
 
   }, [text, animation, stagger, delay, duration, from]);
 
-  const splitText = (text: string) => {
-    return text.split('').map((char, index) => {
+  const splitText = (input: string) => {
+    return input.split('').map((char, index) => {
       if (char === '\n') {
-        return <br key={index} className="char" />;
+        return <br key={index} />;
       }
       return (
-        <span 
-          key={index} 
-          className="char inline-block whitespace-pre"
+        <span
+          key={index}
+          className="char inline-block whitespace-pre will-change-transform"
           style={{ display: char === ' ' ? 'inline' : 'inline-block' }}
         >
           {char === ' ' ? '\u00A0' : char}

@@ -8,7 +8,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 export default function Solutions() {
   const { t, isRTL } = useLanguage();
-  
+
   const sectionRef = useRef<HTMLElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
   const mainCardRef = useRef<HTMLDivElement>(null);
@@ -19,35 +19,32 @@ export default function Solutions() {
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: "top 80%",
+          start: "top 85%",
           once: true,
         }
       });
 
-      // 1. Header fade & slide up
       const headerElements = headerRef.current?.children;
       if (headerElements) {
         tl.fromTo(headerElements,
-          { opacity: 0, y: 30 },
-          { opacity: 1, y: 0, duration: 0.8, stagger: 0.2, ease: "power3.out" },
+          { opacity: 0, y: 20 },
+          { opacity: 1, y: 0, duration: 0.6, stagger: 0.1, ease: "power2.out" },
           0
         );
       }
 
-      // 2. Main Large Card Reveal
       tl.fromTo(mainCardRef.current,
-        { opacity: 0, y: 40 },
-        { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" },
-        "-=0.4"
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" },
+        0.2
       );
 
-      // 3. Small Cards Stagger Reveal (from side)
       const smallCards = smallCardsRef.current?.children;
       if (smallCards) {
         tl.fromTo(smallCards,
-          { opacity: 0, x: isRTL ? -30 : 30 },
-          { opacity: 1, x: 0, duration: 0.8, stagger: 0.2, ease: "power3.out" },
-          "-=0.4"
+          { opacity: 0, x: isRTL ? -20 : 20 },
+          { opacity: 1, x: 0, duration: 0.6, stagger: 0.1, ease: "power2.out" },
+          0.4
         );
       }
     }, sectionRef);
@@ -61,84 +58,84 @@ export default function Solutions() {
   ];
 
   return (
-    <section ref={sectionRef} className="bg-brand-gray py-8 md:py-4 overflow-hidden">
-      <div className="section-container space-y-10 md:space-y-12">
-        
-        {/* Header Section */}
-        <div ref={headerRef} className="flex flex-col md:flex-row md:items-end justify-between gap-6 md:gap-10">
-          <div className="space-y-4 max-w-2xl">
+    <section ref={sectionRef} className="bg-[#0a0a0a] py-16 md:py-24 overflow-hidden border-b border-white/[0.03]">
+      <div className="section-container space-y-12">
+
+        <div ref={headerRef} className="flex flex-col lg:flex-row lg:items-end justify-between gap-10 mb-20 md:mb-24">
+          <div className={`space-y-4 ${isRTL ? 'lg:text-right' : ''}`}>
             <div className={`flex items-center gap-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
-              <span className={`w-12 h-px bg-white/20 ${isRTL ? 'order-1' : ''}`}></span>
-              <span className="text-xs uppercase tracking-[0.4em] font-bold text-white/30">Our Solutions</span>
+              <span className="w-12 h-px bg-white/10"></span>
+              <span className="text-[10px] uppercase tracking-[0.4em] font-bold text-white/20 font-mono">{t.solutions.label}</span>
             </div>
-            <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tighter font-display leading-[0.9]">
-              Precision Engineered <br />
-              <span className="italic font-serif font-light text-white/60">Advertising</span>
+            <h2 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter font-display leading-[0.9]">
+              {t.solutions.precisionTitle} <br />
+              <span className="italic font-serif font-light text-white/40">{t.solutions.advertisingTitle}</span>
             </h2>
           </div>
-          <p className="text-white/40 max-w-sm text-sm md:text-base font-light leading-relaxed">
-            We combine cutting-edge hardware with sophisticated software to deliver your message exactly where it matters most.
-          </p>
+          <div className={`lg:max-w-xs space-y-8 ${isRTL ? 'lg:text-right' : ''}`}>
+            <p className="text-white/30 text-sm md:text-base leading-relaxed font-light">
+              {t.solutions.synergyDesc}
+            </p>
+            <button
+              onClick={() => document.getElementById('formats')?.scrollIntoView({ behavior: 'smooth' })}
+              className="group flex items-center gap-4 text-xs uppercase tracking-widest font-bold text-white/60 hover:text-white transition-colors"
+            >
+              <span className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-white group-hover:text-black transition-all">
+                <ChevronRight size={16} className={isRTL ? 'rotate-180' : ''} />
+              </span>
+              {t.solutions.explore}
+            </button>
+          </div>
         </div>
 
-        {/* Content Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 md:gap-6">
-          
-          {/* Main Large Card */}
-          <div 
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+          <div
             ref={mainCardRef}
-            className="lg:col-span-8 glass-card overflow-hidden group relative flex flex-col"
+            className="lg:col-span-8 glass-card overflow-hidden group relative flex flex-col border border-white/5"
           >
-            {/* Top Text Content (REF text removed from here) */}
-            <div className="p-6 md:p-10 space-y-6 relative z-10 flex-grow">
+            <div className="p-8 md:p-12 space-y-6 relative z-10 flex-grow">
               <div className={`flex justify-between items-start ${isRTL ? 'flex-row-reverse' : ''}`}>
-                <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight">{t.solutions.digitalTops}</h3>
-                <div className="w-10 h-10 md:w-14 md:h-14 rounded-xl border border-white/10 flex items-center justify-center text-gray-500 group-hover:text-white group-hover:border-white group-hover:rotate-180 transition-all duration-500 cursor-pointer flex-shrink-0">
-                  <span className="text-lg md:text-xl font-serif italic">N</span>
+                <h3 className="text-2xl md:text-4xl font-bold tracking-tight">{t.solutions.digitalTops}</h3>
+                <div className="w-12 h-12 rounded-xl border border-white/10 flex items-center justify-center text-white/40 group-hover:text-white group-hover:border-white transition-all cursor-pointer">
+                  <span className="text-lg font-serif italic">N</span>
                 </div>
               </div>
-              
-              <p className="text-gray-400 text-sm md:text-base leading-relaxed max-w-2xl">
+
+              <p className="text-white/40 text-sm md:text-base leading-relaxed max-w-xl">
                 {t.solutions.digitalDesc}
               </p>
-              
-              <div className={`pt-2 flex items-center gap-2 text-[10px] font-mono uppercase tracking-widest text-white/20 group-hover:text-white transition-colors cursor-pointer w-fit ${isRTL ? 'flex-row-reverse' : ''}`}>
-                <span>Explore Technology</span>
+
+              <div className="flex items-center gap-2 text-[9px] font-mono uppercase tracking-widest text-white/20 group-hover:text-white/40 transition-colors w-fit">
+                <span>Explore</span>
                 <ChevronRight size={12} className={isRTL ? 'rotate-180' : ''} />
               </div>
             </div>
 
-            {/* Bottom Image - Always colorful */}
-            <div className="relative h-[220px] md:h-[300px] overflow-hidden mt-auto">
-              <img 
+            <div className="relative h-[250px] md:h-[350px] overflow-hidden mt-auto">
+              <img
                 src="/images/home-2.jpg"
-                alt="Digital Top" 
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000"
-                referrerPolicy="no-referrer"
+                alt="Digital"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-[1.5s]"
+                loading="lazy"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-brand-black/80 to-transparent pointer-events-none"></div>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
             </div>
           </div>
 
-          {/* Small Cards */}
-          <div ref={smallCardsRef} className="lg:col-span-4 flex flex-col gap-5 md:gap-6">
+          <div ref={smallCardsRef} className="lg:col-span-4 flex flex-col gap-6">
             {solutionsData.map((item, i) => (
-              <div 
+              <div
                 key={i}
-                className="flex-1 glass-card p-6 md:p-8 flex flex-col justify-center space-y-5 md:space-y-6 group relative overflow-hidden"
+                className="flex-1 glass-card p-8 md:p-10 flex flex-col justify-center space-y-6 group relative overflow-hidden border border-white/5"
               >
-                {/* Background Hover Glow */}
-                <div className="absolute -right-4 -top-4 w-24 h-24 bg-white/5 rounded-full blur-2xl group-hover:bg-white/10 transition-all duration-500"></div>
-                
-                {/* Icon Container */}
-                <div className="w-12 h-12 md:w-14 md:h-14 bg-white/5 rounded-2xl flex items-center justify-center group-hover:bg-white group-hover:text-black transition-all duration-500">
-                  <item.icon size={22} className="md:w-6 md:h-6" />
+                <div className="w-14 h-14 bg-white/[0.03] rounded-2xl border border-white/5 flex items-center justify-center group-hover:bg-white group-hover:text-black transition-all">
+                  <item.icon size={24} />
                 </div>
-                
-                {/* Text */}
-                <div className="space-y-2 md:space-y-3 relative z-10">
-                  <h3 className="text-xl md:text-2xl font-bold tracking-tight">{item.title}</h3>
-                  <p className="text-gray-400 leading-relaxed text-sm">{item.desc}</p>
+
+                <div className="space-y-3 relative z-10">
+                  <h3 className="text-xl md:text-2xl font-bold">{item.title}</h3>
+                  <p className="text-white/30 text-sm leading-relaxed">{item.desc}</p>
                 </div>
               </div>
             ))}

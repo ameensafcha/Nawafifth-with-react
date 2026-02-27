@@ -17,8 +17,8 @@ const clientLogos = [
 const displayLogos = [...clientLogos, ...clientLogos];
 
 export default function ClientsCarousel() {
-  const { isRTL } = useLanguage();
-  const titleText = isRTL ? 'شركاء النجاح' : 'Our Trusted Partners';
+  const { t, isRTL } = useLanguage();
+  const titleText = t.clients.title;
   const marqueeRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 

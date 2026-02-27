@@ -21,6 +21,8 @@ export interface HeroTranslations {
   scroll: string;
   liveCampaigns: string;
   liveSubtitle: string;
+  marquee: string[];
+  nawafithAdvertising: string;
 }
 
 export interface MissionTranslations {
@@ -37,6 +39,15 @@ export interface MissionTranslations {
   realTime: string;
   description5: string;
   learnMore: string;
+  missionLabel: string;
+  pioneeringTitle: string;
+  mobilePart: string;
+  statusLabel: string;
+  statusValue: string;
+  estLabel: string;
+  estValue: string;
+  coverageEfficiency: string;
+  activeMonitoring: string;
 }
 
 export interface SolutionsTranslations {
@@ -48,6 +59,11 @@ export interface SolutionsTranslations {
   dataDesc: string;
   scalable: string;
   scalableDesc: string;
+  label: string;
+  precisionTitle: string;
+  advertisingTitle: string;
+  synergyDesc: string;
+  explore: string;
 }
 
 export interface CTATranslations {
@@ -68,12 +84,29 @@ export interface AboutTranslations {
   missionDesc1: string;
   missionDesc2: string;
   missionDesc3: string;
+  whoWeAreLabel: string;
+  aboutPart2: string;
+  quote: string;
+  establishedLabel: string;
+  purposeLabel: string;
+  missionPart2: string;
+  coverageLabel: string;
+  brandVisibilityLabel: string;
 }
 
 export interface FormatTranslations {
   title: string;
   desc: string;
+  heroSubtitle: string;
+  heroTitle1: string;
+  heroTitle2: string;
+  badge1: string;
+  badge2: string;
+  cardLabel: string;
+  cardDesc: string;
   formatsTitle: string;
+  featTitle: string;
+  featSubtitle: string;
   live: string;
   liveDesc: string;
   static: string;
@@ -86,6 +119,10 @@ export interface FormatTranslations {
   feat2Desc: string;
   feat3: string;
   feat3Desc: string;
+  exploreBtn: string;
+  tagDynamic: string;
+  tagFixed: string;
+  tagTargeted: string;
 }
 
 export interface FAQ {
@@ -103,7 +140,11 @@ export interface ContactTranslations {
   message: string;
   submit: string;
   faqTitle: string;
-  faqs: FAQ[];
+  faqs: FAQ[],
+  knowledgeBaseLabel: string;
+  phoneValue: string;
+  addressValue: string;
+  emailValue: string;
 }
 
 export interface FooterTranslations {
@@ -129,12 +170,22 @@ export interface LeverageTranslations {
   strategicDesc: string;
   download: string;
   presentation: string;
+  strategyLabel: string;
+  networkLive: string;
+}
+
+export interface FooterImageTranslations {
+  urbanNetwork: string;
+}
+
+export interface ClientsTranslations {
+  title: string;
 }
 
 export interface Translations {
   nav: NavTranslations;
   hero: HeroTranslations;
-  clients: string;
+  clients: ClientsTranslations;
   mission: MissionTranslations;
   solutions: SolutionsTranslations;
   cta: CTATranslations;
@@ -143,4 +194,5 @@ export interface Translations {
   contact: ContactTranslations;
   footer: FooterTranslations;
   leverage: LeverageTranslations;
+  footerImage: FooterImageTranslations;
 }
