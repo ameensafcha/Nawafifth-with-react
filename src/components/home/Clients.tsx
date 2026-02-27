@@ -1,5 +1,3 @@
-import { useLayoutEffect, useRef } from 'react';
-import gsap from 'gsap';
 import { useLanguage } from '../../context/LanguageContext';
 
 const clientLogos = [
@@ -10,49 +8,14 @@ const clientLogos = [
   "https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg",
 ];
 
-// Double the logos for seamless loop
 const displayLogos = [...clientLogos, ...clientLogos];
 
 export default function ClientsCarousel() {
   const { t, isRTL } = useLanguage();
   const titleText = t.clients.title;
-  const marqueeRef = useRef<HTMLDivElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  useLayoutEffect(() => {
-    const ctx = gsap.context(() => {
-      if (!marqueeRef.current) return;
-
-      const marquee = marqueeRef.current;
-
-      gsap.set(marquee, { xPercent: 0 });
-
-      const direction = isRTL ? 50 : -50;
-      const animation = gsap.to(marquee, {
-        xPercent: direction,
-        duration: 25,
-        repeat: -1,
-        ease: "none",
-      });
-
-      const onEnter = () => gsap.to(animation, { timeScale: 0.1, duration: 1, ease: "power2.out" });
-      const onLeave = () => gsap.to(animation, { timeScale: 1, duration: 1, ease: "power2.inOut" });
-
-      marquee.addEventListener("mouseenter", onEnter);
-      marquee.addEventListener("mouseleave", onLeave);
-
-      return () => {
-        marquee.removeEventListener("mouseenter", onEnter);
-        marquee.removeEventListener("mouseleave", onLeave);
-      };
-    }, containerRef);
-
-    return () => ctx.revert();
-  }, [isRTL]);
 
   return (
     <section
-      ref={containerRef}
       className="relative py-20 md:py-32 bg-[#050505] overflow-hidden border-y border-white/[0.03]"
       dir={isRTL ? 'rtl' : 'ltr'}
     >
@@ -76,9 +39,11 @@ export default function ClientsCarousel() {
         <div className="absolute inset-y-0 right-0 w-16 md:w-48 bg-gradient-to-l from-[#050505] to-transparent z-10 pointer-events-none"></div>
 
         <div
-          ref={marqueeRef}
           className="flex items-center will-change-transform py-4"
-          style={{ width: 'max-content' }}
+          style={{ 
+            width: 'max-content',
+            animation: isRTL ? 'rtl-marquee 30s linear infinite' : 'marquee 30s linear infinite'
+          }}
         >
           {displayLogos.map((logo, index) => (
             <div key={index} className="flex-none px-4 md:px-8 group/item">
