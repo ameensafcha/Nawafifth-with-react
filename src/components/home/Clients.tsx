@@ -8,9 +8,6 @@ const clientLogos = [
   "https://upload.wikimedia.org/wikipedia/commons/9/96/Microsoft_logo_%282012%29.svg",
   "https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg",
   "https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg",
-  "https://upload.wikimedia.org/wikipedia/commons/2/24/Samsung_Logo.svg",
-  "https://upload.wikimedia.org/wikipedia/commons/b/b5/SAP_logo.svg",
-  "https://upload.wikimedia.org/wikipedia/commons/d/df/Oracle_logo.svg",
 ];
 
 // Double the logos for seamless loop
@@ -28,18 +25,16 @@ export default function ClientsCarousel() {
 
       const marquee = marqueeRef.current;
 
-      // Ensure we have a clean start using xPercent
-      gsap.set(marquee, { xPercent: 0, x: 0 });
+      gsap.set(marquee, { xPercent: 0 });
 
-      // Move exactly 50% of its own total width to perfectly loop the doubled array
+      const direction = isRTL ? 50 : -50;
       const animation = gsap.to(marquee, {
-        xPercent: isRTL ? 50 : -50,
-        duration: 40,
+        xPercent: direction,
+        duration: 25,
         repeat: -1,
         ease: "none",
       });
 
-      // Pause/Slow on hover
       const onEnter = () => gsap.to(animation, { timeScale: 0.1, duration: 1, ease: "power2.out" });
       const onLeave = () => gsap.to(animation, { timeScale: 1, duration: 1, ease: "power2.inOut" });
 

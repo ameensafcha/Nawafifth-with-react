@@ -11,7 +11,7 @@ gsap.registerPlugin(ScrollTrigger);
  */
 const IMAGES = {
   // Main Hero background image
-  HERO: '/images/ASSET-7-min-2048x1365.jpg',
+  HERO: 'images/ASSET-7-min-2048x1365.jpg',
 
   // Gallery Section Images
   LIVE_FORMAT: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?q=80&w=1200',
@@ -19,9 +19,9 @@ const IMAGES = {
   GEO_FORMAT: 'https://images.unsplash.com/photo-1526628953301-3e589a6a8b74?q=80&w=1200',
 
   // Feature Showcase Images
-  FEATURE_IMPACT: '/images/advertising-1of4.png',  // Feature 1
-  FEATURE_RESOLUTION: '/images/advertising-format-20f4.png', // Feature 2
-  FEATURE_WEATHERPROOF: '/images/advertising-4of4.png', // Feature 3
+  FEATURE_IMPACT: 'images/advertising-1of4.png',  // Feature 1
+  FEATURE_RESOLUTION: 'images/advertising-format-20f4.png', // Feature 2
+  FEATURE_WEATHERPROOF: 'images/advertising-4of4.png', // Feature 3
 };
 
 export default function FormatsPage() {

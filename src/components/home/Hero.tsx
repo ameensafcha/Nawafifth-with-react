@@ -125,7 +125,7 @@ export default function Hero() {
             <div className="relative rounded-3xl md:rounded-[2.5rem] overflow-hidden border border-white/5 bg-zinc-900 shadow-2xl">
               <div className="aspect-video relative">
                 <video autoPlay muted loop playsInline preload="auto" className="w-full h-full object-cover">
-                  <source src="/video/1.mp4" type="video/mp4" />
+                  <source src="video/1.mp4" type="video/mp4" />
                 </video>
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
               </div>
