@@ -56,7 +56,7 @@ export default function FooterImage() {
 
           <img
             ref={imgRef}
-            src="/images/new-york-streets-high-buildings-cars-cabs-min-2048x1154.jpg"
+            src="images/new-york-streets-high-buildings-cars-cabs-min-2048x1154.jpg"
             alt="City Advertising"
             className="w-full h-full object-cover grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-1000"
             loading="lazy"

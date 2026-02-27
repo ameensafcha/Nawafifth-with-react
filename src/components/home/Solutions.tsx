@@ -114,7 +114,7 @@ export default function Solutions() {
 
             <div className="relative h-[250px] md:h-[350px] overflow-hidden mt-auto">
               <img
-                src="/images/home-2.jpg"
+                src="images/home-2.jpg"
                 alt="Digital"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-[1.5s]"
                 loading="lazy"

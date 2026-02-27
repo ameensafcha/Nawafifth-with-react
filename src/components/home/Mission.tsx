@@ -129,7 +129,7 @@ export default function Mission() {
         >
           <img
             ref={imgRef}
-            src="/images/nawafifth-1.jpg"
+            src="images/nawafifth-1.jpg"
             alt="Our Mission"
             className="w-full h-auto scale-105 will-change-transform opacity-70"
             loading="lazy"

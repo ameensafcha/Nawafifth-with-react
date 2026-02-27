@@ -126,7 +126,7 @@ export default function CTA({ variant = 'boost' }: CTAProps) {
 
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none mix-blend-screen opacity-5">
         <img
-          src="/images/home-2.jpg"
+          src="images/home-2.jpg"
           alt="Overlay"
           className="w-full h-full object-cover grayscale"
           loading="lazy"

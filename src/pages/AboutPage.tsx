@@ -104,7 +104,7 @@ export default function AboutPage() {
 
           <div ref={imageRef} className={`lg:col-span-5 rounded-[2.5rem] overflow-hidden shadow-2xl border border-white/5 relative aspect-[3/4] ${isRTL ? 'lg:order-1' : 'lg:order-2'} bg-zinc-900`}>
             <img
-              src="/images/new-york-streets-high-buildings-cars-cabs-min-2048x1154.jpg"
+              src="images/new-york-streets-high-buildings-cars-cabs-min-2048x1154.jpg"
               alt="About Nawafith"
               className="w-full h-full object-cover grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-1000"
               loading="lazy"
@@ -125,7 +125,7 @@ export default function AboutPage() {
             <div className="absolute -inset-10 bg-white/[0.01] rounded-full blur-[100px] pointer-events-none"></div>
             <div className="relative z-10 rounded-3xl overflow-hidden border border-white/5 shadow-2xl aspect-video bg-zinc-900 group">
               <img
-                src="/images/home-2.jpg"
+                src="images/home-2.jpg"
                 alt="Our Mission"
                 className="w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-[2s] opacity-70"
                 loading="lazy"

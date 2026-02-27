@@ -17,7 +17,7 @@ export default function Footer({ setPage }: FooterProps) {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-20 mb-20">
           <div className="sm:col-span-2 lg:col-span-2 space-y-8">
             <img
-              src="/images/NAWAFITH-LOGO.png"
+              src="images/NAWAFITH-LOGO.png"
               alt="Nawafith"
               className="h-12 w-auto object-contain transition-opacity hover:opacity-80 cursor-pointer"
               onClick={() => setPage('home')}

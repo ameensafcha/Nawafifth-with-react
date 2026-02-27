@@ -156,7 +156,7 @@ export default function Leverage() {
             >
               <img
                 ref={imageRef}
-                src="/images/hero3.jpg"
+                src="images/hero3.jpg"
                 alt="Leverage"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-[1.5s] opacity-70 group-hover:opacity-100"
                 loading="lazy"

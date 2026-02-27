@@ -81,7 +81,7 @@ export default function Navbar({ currentPage, setPage }: NavbarProps) {
         >
           <div className="flex items-center cursor-pointer group" onClick={() => setPage('home')}>
             <img
-              src="/images/NAWAFITH-LOGO.png"
+              src="images/NAWAFITH-LOGO.png"
               alt="Logo"
               className="h-10 w-auto object-contain transition-transform group-hover:scale-105"
             />
