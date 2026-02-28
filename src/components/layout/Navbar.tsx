@@ -157,18 +157,26 @@ export default function Navbar({ currentPage, setPage }: NavbarProps) {
             </button>
           </div>
 
-          <div className="flex lg:hidden items-center gap-4">
+          <div className="flex lg:hidden items-center gap-3 sm:gap-4">
+            {/* Mobile Language Toggle */}
+            <button
+              onClick={() => setLanguage(language === 'en' ? 'ar' : 'en')}
+              className="px-3 py-1.5 rounded-full bg-[var(--glass-bg)] border border-[var(--glass-border)] text-[10px] font-bold text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-all active:scale-95"
+            >
+              {language === 'en' ? 'AR' : 'EN'}
+            </button>
+
             {/* Mobile Theme Toggle - Single Button */}
             <button
               onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
               aria-label={resolvedTheme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-              className="w-9 h-9 rounded-full bg-[var(--glass-bg)] border border-[var(--glass-border)] flex items-center justify-center text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-all"
+              className="w-9 h-9 rounded-full bg-[var(--glass-bg)] border border-[var(--glass-border)] flex items-center justify-center text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-all active:scale-95"
             >
               {resolvedTheme === 'dark' ? <Sun size={14} /> : <Moon size={14} />}
             </button>
 
             <button
-              className="w-10 h-10 flex flex-col items-center justify-center gap-1.5"
+              className="w-10 h-10 flex flex-col items-center justify-center gap-1.5 active:scale-95"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               aria-label="Toggle menu"
               aria-expanded={isMobileMenuOpen}
@@ -205,10 +213,6 @@ export default function Navbar({ currentPage, setPage }: NavbarProps) {
             <button className="bg-[var(--text-primary)] text-[var(--bg-primary)] px-10 py-4 rounded-full text-sm font-bold">
               {t.nav.callNow}
             </button>
-            <div className="flex gap-4 text-[10px] font-bold text-[var(--text-tertiary)]">
-              <button onClick={() => setLanguage('ar')} aria-label="Switch to Arabic">ARABIC</button>
-              <button onClick={() => setLanguage('en')} aria-label="Switch to English">ENGLISH</button>
-            </div>
           </div>
         </div>
         <button

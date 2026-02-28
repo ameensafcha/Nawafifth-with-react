@@ -35,7 +35,7 @@ export default function ContactPage() {
 
   return (
     <div ref={mainRef} className="bg-[var(--bg-primary)] min-h-screen text-[var(--text-primary)] overflow-hidden">
-      <section className="bg-[var(--bg-primary)]  md:py-10 pb-8">
+      <section className="bg-[var(--bg-primary)]  pt-22  md:py-10 pb-8">
         <div className="section-container grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-24 items-start">
           <div className="contact-intro space-y-12 lg:text-start">
             <div className="space-y-4 md:space-y-6">

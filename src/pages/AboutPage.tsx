@@ -76,7 +76,7 @@ export default function AboutPage() {
 
   return (
     <div ref={mainRef} className="bg-[var(--bg-primary)] min-h-screen text-[var(--text-primary)] overflow-hidden">
-      <section className="bg-[var(--bg-primary)]  md:py-10 pb-8">
+      <section className="bg-[var(--bg-primary)] pt-22  md:py-10 pb-8">
         <div className="section-container grid grid-cols-1 lg:grid-cols-12 gap-10 sm:gap-12 lg:gap-16 items-center">
           <div className="lg:col-span-7 space-y-8 text-start">
             <div className="space-y-4">

@@ -100,7 +100,7 @@ export default function FormatsPage() {
     <div ref={mainRef} className="bg-[var(--bg-primary)] min-h-screen text-[var(--text-primary)] overflow-hidden">
 
       {/* 1. CINEMATIC HERO SECTION */}
-      <section className="relative flex items-center pt-28  md:py-10 pb-8 bg-[var(--bg-primary)]">
+      <section className="relative flex items-center pt-22  md:py-10 pb-8 bg-[var(--bg-primary)]">
         <div className="section-container grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
 
           <div ref={heroTextRef} className="lg:col-span-6 space-y-10 z-10">

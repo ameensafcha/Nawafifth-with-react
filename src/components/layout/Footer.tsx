@@ -10,7 +10,7 @@ export default function Footer({ setPage }: FooterProps) {
   const { t, isRTL } = useLanguage();
 
   return (
-    <footer className="bg-[var(--bg-primary)] border-t border-[var(--border-secondary)] pt-32 pb-16 relative overflow-hidden">
+    <footer className="bg-[var(--bg-primary)] border-t border-[var(--border-secondary)] pt-16 pb-24 relative overflow-hidden">
       <div className="absolute top-0 left-0 w-full h-px bg-[var(--gradient-accent)] opacity-[0.15]"></div>
 
       <div className="section-container relative z-10">
@@ -103,7 +103,7 @@ export default function Footer({ setPage }: FooterProps) {
       </div>
 
       {/* Decorative Text Wrapper */}
-      <div className="absolute bottom-6 md:bottom-10 lg:bottom-12 left-1/2 -translate-x-1/2 text-[15vw] sm:text-[18vw] font-black text-[var(--text-accent)] opacity-[0.06] dark:opacity-[0.02] font-display pointer-events-none whitespace-nowrap select-none tracking-tighter transition-all duration-300">
+      <div className="absolute bottom-[-2%] left-1/2 -translate-x-1/2 text-[15vw] sm:text-[18vw] font-black text-[var(--text-accent)] opacity-[0.06] dark:opacity-[0.02] font-display pointer-events-none whitespace-nowrap select-none tracking-tighter transition-all duration-300">
         NAWAFITH
       </div>
     </footer>
