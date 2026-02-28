@@ -4,6 +4,7 @@ import gsap from 'gsap';
 import { useLanguage } from '../../context/LanguageContext';
 import TextType from '../ui/TextType';
 import SplitText from '../ui/SplitText';
+import MagneticButton from '../ui/MagneticButton';
 
 const marqueeData = [
   "Dynamic Displays", "Real-time Analytics", "Geo-Targeting",
@@ -15,7 +16,6 @@ const displayItems = [...marqueeData, ...marqueeData];
 export default function Hero() {
   const { t, isRTL } = useLanguage();
   const scope = useRef(null);
-  const marqueeRef = useRef(null);
   const buttonRef = useRef(null);
 
   useLayoutEffect(() => {
@@ -27,7 +27,6 @@ export default function Hero() {
       // Reset & Initial States
       gsap.set(".hero-content > *", { x: isRTL ? 30 : -30, opacity: 0 });
       gsap.set(".video-container", { scale: 0.95, opacity: 0 });
-      gsap.set(".marquee-bar", { y: 30, opacity: 0 });
 
       // Timeline Sequence
       tl.to(".hero-content > *", {
@@ -41,88 +40,109 @@ export default function Hero() {
           opacity: 1,
           duration: 1.2
         }, "-=0.8")
-        .to(".marquee-bar", {
-          y: 0,
+        .to(".video-container", {
+          scale: 1,
           opacity: 1,
-          duration: 0.6
+          duration: 1.2
         }, "-=0.8");
 
-      // Seamless Marquee Animation
-      if (marqueeRef.current) {
-        const marqueeWidth = marqueeRef.current.offsetWidth / 2;
-        gsap.to(marqueeRef.current, {
-          x: isRTL ? marqueeWidth : -marqueeWidth,
-          duration: 40,
-          repeat: -1,
-          ease: "none",
-          modifiers: {
-            x: gsap.utils.unitize(x => parseFloat(x) % marqueeWidth)
-          }
-        });
-      }
     }, scope);
 
     return () => ctx.revert();
   }, [isRTL, t.hero.marquee]);
 
   return (
-    <section ref={scope} className="relative min-h-[100dvh] lg:flex lg:items-center overflow-x-hidden bg-[#0a0a0a] pt-32 pb-40 lg:pt-16 lg:pb-0">
+    <section ref={scope} className="relative min-h-[100dvh] lg:flex lg:items-center overflow-x-hidden lg:py-6">
 
-      {/* Background Overlay - Optimized with pre-rendered gradient fallback */}
-      <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black z-10" />
-        <img
-          src="https://images.unsplash.com/photo-1519501025264-65ba15a82390?q=80&w=2000"
-          className="w-full h-full object-cover opacity-10"
-          alt="bg"
-          loading="eager"
-        />
+      {/* Background with subtle grain/noise */}
+      <div className="absolute inset-0 bg-[var(--bg-primary)] overflow-hidden">
+        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] mix-blend-overlay"></div>
+        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-[var(--glow-accent)] rounded-full blur-[120px] opacity-20"></div>
+        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-[var(--glow-secondary)] rounded-full blur-[120px] opacity-20"></div>
       </div>
 
-      <div className="relative z-20 w-full max-w-[1440px] mx-auto px-6 md:px-12 lg:px-20 mb-20 lg:mb-0">
-        <div className={`grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-12 items-center ${isRTL ? 'direction-rtl' : 'direction-ltr'}`}>
-
-          {/* TEXT CONTENT */}
-          <div
-            className={`hero-content space-y-6 md:space-y-8 ${isRTL ? 'lg:order-2 text-right' : 'lg:order-1 text-left'}`}
-          >
-            <div className="flex items-center gap-4">
-              <span className="w-8 md:w-12 h-[1px] bg-white/20" />
-              <div className="text-[9px] md:text-[10px] uppercase tracking-[0.4em] text-white/40 font-bold">
-                <TextType
-                  text={[t.hero.welcomeTo, t.hero.nawafithAdvertising]}
-                />
-              </div>
+      <div className="section-container relative z-10 pt-32 pb-40">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+          {/* Left Column - Content */}
+          <div className="hero-content text-start">
+            {/* Badge: liveCampaigns + liveSubtitle */}
+            <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-[var(--glass-bg)] border border-[var(--border-secondary)] mb-8 overflow-hidden">
+              <span className="w-2 h-2 rounded-full bg-[var(--color-emerald-500)] animate-pulse"></span>
+              <span className="text-[10px] md:text-xs font-bold uppercase tracking-widest text-[var(--text-secondary)]">
+                {t.hero.liveCampaigns}
+              </span>
+              <span className="text-[9px] md:text-[10px] text-[var(--text-tertiary)] border-l border-[var(--border-primary)] pl-3">
+                {t.hero.liveSubtitle}
+              </span>
             </div>
 
-            <h1 className="text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-black text-white leading-[1.1] tracking-tight">
-              <SplitText
-                text={t.hero.title}
-                className="inline-block"
-                animation="slide"
-                stagger={0.03}
-              />
+            {/* welcomeTo + TextType animation */}
+            <div className="flex gap-2 text-base sm:text-lg md:text-xl text-[var(--text-tertiary)] mb-4 uppercase tracking-[0.3em] font-light">
+              <span>{t.hero.welcomeTo}</span>
+              <span className="text-[var(--text-accent)] font-bold italic">
+                <TextType
+                  text={t.hero.words}
+                  loop={true}
+                  typingSpeed={60}
+                  deletingSpeed={40}
+                  pauseDuration={1}
+                  initialDelay={0.5}
+                  cursorClassName="text-[var(--text-accent)]"
+                />
+              </span>
+            </div>
+
+            {/* nawafithAdvertising as main heading split into two lines */}
+            <h1 className="text-display text-4xl sm:text-6xl md:text-8xl lg:text-9xl mb-8 md:mb-12 text-[var(--text-primary)] max-w-[100vw] leading-[0.8] tracking-tight">
+              <span className="block">
+                <SplitText
+                  text={t.hero.title.split('\n')[0]}
+                  animation="slide"
+                  stagger={0.05}
+                />
+              </span>
+              <span className="block italic font-serif text-[var(--text-accent)] opacity-60 mt-2">
+                <SplitText
+                  text={t.hero.title.split('\n')[1] || ''}
+                  animation="slide"
+                  stagger={0.05}
+                />
+              </span>
             </h1>
 
-            <p className="text-base md:text-lg lg:text-xl text-gray-400 max-w-xl leading-relaxed">
-              {t.hero.subtitle} <span className="text-white font-semibold underline decoration-white/20 underline-offset-8">{t.hero.onCar}</span>.
-              <span className="block mt-4 text-xs md:text-sm opacity-50">{t.hero.description}</span>
+            {/* subtitle + onCar + description */}
+            <p className="text-base sm:text-lg md:text-xl text-[var(--text-secondary)] mb-8 md:mb-10 max-w-xl leading-relaxed">
+              {t.hero.subtitle}{' '}
+              <span className="font-semibold text-[var(--text-accent)]">{t.hero.onCar}</span>{' '}
+              {t.hero.description}
             </p>
 
-            <div className="flex items-center">
-              <button
-                ref={buttonRef}
-                className="bg-white text-black px-6 md:px-10 py-3 md:py-4 rounded-full text-sm md:text-base font-bold flex items-center gap-3 group transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] hover:shadow-[0_0_30px_rgba(255,255,255,0.1)]"
+            {/* Buttons: scheduleCall + explore */}
+            <div className="flex flex-wrap gap-4">
+              <MagneticButton
+                className="btn-primary group shadow-[0_0_40px_var(--glow-accent)] hover:shadow-[0_8px_30px_var(--glow-accent)]"
+                strength={0.4}
               >
-                {t.hero.scheduleCall}
-                <ChevronRight size={20} className={`transition-transform group-hover:translate-x-1 ${isRTL ? 'rotate-180 group-hover:-translate-x-1' : ''}`} />
-              </button>
+                <span className="relative z-10 flex items-center gap-3">
+                  {t.hero.scheduleCall}
+                  <ChevronRight className="w-5 h-5 rtl:rotate-180 rtl:group-hover:-translate-x-1 group-hover:translate-x-1 transition-transform" />
+                </span>
+              </MagneticButton>
+              <MagneticButton
+                className="btn-outline group"
+                strength={0.3}
+              >
+                <span className="relative z-10 flex items-center gap-3">
+                  {t.hero.explore}
+                  <ChevronRight className="w-5 h-5 rtl:rotate-180 rtl:group-hover:-translate-x-1 group-hover:translate-x-1 transition-transform" />
+                </span>
+              </MagneticButton>
             </div>
           </div>
 
           {/* VIDEO CONTAINER - Optimized loading */}
-          <div className={`video-container w-full ${isRTL ? 'lg:order-1' : 'lg:order-2'}`}>
-            <div className="relative rounded-3xl md:rounded-[2.5rem] overflow-hidden border border-white/5 bg-zinc-900 shadow-2xl">
+          <div className="video-container w-full">
+            <div className="relative rounded-3xl md:rounded-[2.5rem] overflow-hidden border border-[var(--border-primary)] bg-[var(--bg-elevated)] shadow-2xl">
               <div className="aspect-video relative">
                 <video autoPlay muted loop playsInline preload="auto" className="w-full h-full object-cover">
                   <source src="video/1.mp4" type="video/mp4" />
@@ -135,24 +155,6 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* MARQUEE BAR */}
-      <div className="marquee-bar absolute bottom-0 left-0 w-full py-6 md:py-8 border-t border-white/5 bg-black/60 backdrop-blur-lg z-30">
-        <div ref={marqueeRef} className="flex whitespace-nowrap will-change-transform">
-          {[...t.hero.marquee, ...t.hero.marquee, ...t.hero.marquee, ...t.hero.marquee].map((item, index) => (
-            <div key={index} className="flex items-center gap-6 md:gap-10 px-6 md:px-10">
-              <span className="text-[9px] md:text-[11px] uppercase tracking-[0.3em] md:tracking-[0.4em] font-bold text-white/30 hover:text-white/60 transition-colors cursor-default">
-                {item}
-              </span>
-              <div className="w-1 md:w-1.5 h-1 md:h-1.5 rounded-full bg-white/10" />
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <style>{`
-        .direction-rtl { direction: rtl; }
-        .direction-ltr { direction: ltr; }
-      `}</style>
     </section>
   );
 }

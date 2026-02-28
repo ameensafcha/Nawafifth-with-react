@@ -22,7 +22,10 @@ export interface HeroTranslations {
   liveCampaigns: string;
   liveSubtitle: string;
   marquee: string[];
+  words: string[];
   nawafithAdvertising: string;
+  badge: string;
+  cta: string;
 }
 
 export interface MissionTranslations {
@@ -98,8 +101,6 @@ export interface FormatTranslations {
   title: string;
   desc: string;
   heroSubtitle: string;
-  heroTitle1: string;
-  heroTitle2: string;
   badge1: string;
   badge2: string;
   cardLabel: string;
@@ -159,10 +160,16 @@ export interface FooterTranslations {
   formats: string;
   contact: string;
   legal: string;
+  navigation: string;
+  reachUs: string;
+  address: string;
+  privacyPolicy: string;
+  termsOfService: string;
 }
 
 export interface LeverageTranslations {
   title: string;
+  titlePart2: string;
   desc: string;
   realtime: string;
   realtimeDesc: string;

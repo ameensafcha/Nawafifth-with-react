@@ -3,6 +3,8 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ArrowRight } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
+import AnimatedCounter from '../ui/AnimatedCounter';
+import MagneticButton from '../ui/MagneticButton';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -37,8 +39,8 @@ export default function Mission() {
       );
 
       tl.fromTo(imgRef.current,
-        { scale: 1.2, filter: "grayscale(100%) blur(5px)" },
-        { scale: 1, filter: "grayscale(30%) blur(0px)", duration: 1.2, ease: "expo.out" },
+        { scale: 1.2, filter: "blur(5px)" },
+        { scale: 1, filter: "blur(0px)", duration: 1.2, ease: "expo.out" },
         0
       );
 
@@ -104,109 +106,115 @@ export default function Mission() {
       ease: "power2.out",
       overwrite: "auto"
     });
-    gsap.to(imgRef.current, { filter: "grayscale(30%)", duration: 0.4 });
+    gsap.to(imgRef.current, { filter: "brightness(0.9)", duration: 0.4 });
   };
 
   const handleMouseEnter = () => {
-    gsap.to(imgRef.current, { filter: "grayscale(0%)", duration: 0.4 });
+    gsap.to(imgRef.current, { filter: "brightness(1)", duration: 0.4 });
   };
 
   return (
     <section
       ref={sectionRef}
-      className="section-container grid grid-cols-1 lg:grid-cols-2 gap-24 items-center overflow-hidden py-20"
+
+      className="section-container grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-20 items-center overflow-hidden py-16 sm:py-20 md:py-28"
     >
-      <div className={`order-2 lg:order-1 relative ${isRTL ? 'lg:order-2' : 'lg:order-1'}`}>
-        <div className="absolute -inset-4 bg-white/[0.01] rounded-[2.5rem] blur-xl transition-all duration-700"></div>
+      {/* IMAGE SIDE */}
+      <div className="order-2 lg:order-1 relative">
+        <div className="absolute -inset-4 bg-[var(--glow-accent)] rounded-[2.5rem] blur-xl opacity-[0.05] transition-all duration-700"></div>
 
         <div
           ref={imageWrapperRef}
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
           onMouseEnter={handleMouseEnter}
-          className="relative z-10 rounded-[2rem] overflow-hidden shadow-2xl border border-white/5 will-change-transform cursor-crosshair bg-zinc-900"
-          style={{ clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)' }} // Prevent invisible start if GSAP fails
+          className="relative z-10 rounded-[2rem] overflow-hidden shadow-2xl border border-[var(--border-primary)] will-change-transform cursor-crosshair bg-[var(--bg-elevated)]"
+          style={{ clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)' }}
         >
           <img
             ref={imgRef}
             src="images/nawafifth-1.jpg"
             alt="Our Mission"
-            className="w-full h-auto scale-105 will-change-transform opacity-70"
+            className="w-full h-auto scale-105 will-change-transform opacity-100 transition-opacity"
             loading="lazy"
           />
 
           <div
             ref={dataOverlayRef}
-            className="absolute bottom-6 left-6 flex flex-col gap-1 font-mono text-[9px] uppercase tracking-[0.1em] pointer-events-none will-change-transform bg-black/60 backdrop-blur-md p-3 rounded-lg border border-white/5"
+            className="absolute bottom-6 left-6 flex flex-col gap-1 font-mono text-[9px] uppercase tracking-[0.1em] pointer-events-none will-change-transform bg-black/60 backdrop-blur-md p-3 rounded-lg border border-white/10"
           >
-            <span className="text-white/70 flex items-center gap-2">
-              <span className="w-1 h-1 rounded-full bg-green-500 animate-pulse"></span>
-              STATUS: OPTIMIZED
+            <span className="text-[var(--text-primary)] flex items-center gap-2">
+              <span className="w-1 h-1 rounded-full bg-[var(--color-emerald-500)] animate-pulse"></span>
+              {t.mission.statusLabel}: {t.mission.statusValue}
             </span>
-            <span className="text-white/40">EST. 2024</span>
+            <span className="text-[var(--text-tertiary)]">{t.mission.estLabel} {t.mission.estValue}</span>
           </div>
         </div>
       </div>
 
+      {/* TEXT SIDE */}
       <div
         ref={textWrapperRef}
-        className={`space-y-8 order-1 lg:order-2 ${isRTL ? 'lg:order-1 lg:text-right' : 'lg:order-2 lg:text-left'}`}
+        className="space-y-8 order-1 lg:order-2 text-start"
       >
         <div className="space-y-4">
-          <div className={`flex items-center gap-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
-            <span className={`w-12 h-px bg-white/20 ${isRTL ? 'order-1' : ''}`}></span>
-            <span className="text-[10px] uppercase tracking-[0.4em] font-bold text-white/30 font-mono italic">
+          <div className="flex items-center gap-4">
+            <span className="w-12 h-px bg-[var(--text-accent)] opacity-40"></span>
+            <span className="text-[10px] uppercase tracking-[0.4em] font-bold text-[var(--text-accent)] font-mono italic">
               {t.mission.missionLabel}
             </span>
           </div>
 
-          <h2 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter font-display leading-[0.85]">
+          <h2 className="text-display text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter font-display leading-[0.85] text-[var(--text-primary)]">
             {t.mission.pioneeringTitle} <br />
-            <span className="italic font-serif font-light text-white/40">{t.mission.mobilePart}</span>
+            <span className="italic font-serif font-light text-[var(--text-accent)] opacity-50">{t.mission.mobilePart}</span>
           </h2>
 
-          <div className={`grid grid-cols-2 gap-4 ${isRTL ? 'lg:justify-end' : ''}`}>
-            <div className="p-6 rounded-3xl bg-white/[0.02] border border-white/5 space-y-2">
-              <p className="text-[9px] uppercase tracking-widest text-white/20 font-bold">{t.mission.statusLabel}</p>
-              <div className="flex items-center gap-2">
-                <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></div>
-                <p className="text-white font-bold tracking-tight">{t.mission.statusValue}</p>
-              </div>
-            </div>
-            <div className="p-6 rounded-3xl bg-white/[0.02] border border-white/5 space-y-2">
-              <p className="text-[9px] uppercase tracking-widest text-white/20 font-bold">{t.mission.estLabel}</p>
-              <p className="text-white font-bold tracking-tight">{t.mission.estValue}</p>
-            </div>
-          </div>
-
-          <div className="space-y-8 text-white/30 leading-relaxed text-base md:text-lg lg:text-xl font-light max-w-xl">
+          <div className="space-y-8 text-[var(--text-secondary)] leading-relaxed text-base md:text-lg lg:text-xl font-light max-w-xl">
             <p>
-              {t.mission.description1} <span className="text-white/60 font-medium tracking-tight">{t.mission.nawafith}</span> {t.mission.description2} <span className="text-white/60 underline decoration-white/10 underline-offset-8">{t.mission.onCar}</span>.
+              {t.mission.description1}{' '}
+              <span className="font-semibold text-[var(--text-accent)]">{t.mission.nawafith}</span>
+              {t.mission.description2}{' '}
+              <span className="font-semibold text-[var(--text-accent)]">{t.mission.onCar}</span>
+              {t.mission.description3}{' '}
+              <span className="font-semibold">{t.mission.impactful}</span> &amp;{' '}
+              <span className="font-semibold">{t.mission.measurable}</span>.
             </p>
-            <p className="text-sm md:text-base opacity-60">
-              {t.mission.description3}
+            <p ref={quoteRef} className="text-[var(--text-tertiary)]">
+              {t.mission.description4}
+            </p>
+            <p>
+              {t.mission.goal}{' '}
+              <span className="font-semibold text-[var(--text-accent)]">{t.mission.realTime}</span>{' '}
+              {t.mission.description5}
             </p>
           </div>
 
-          <div className="flex flex-wrap gap-10 pt-6">
-            <div className="space-y-1">
-              <p className="text-3xl font-black text-white px-2 py-1 bg-white/[0.03] rounded-lg inline-block">01</p>
-              <p className="text-[10px] uppercase tracking-[0.2em] text-white/20 font-bold">{t.mission.coverageEfficiency}</p>
+          <div className="flex flex-wrap gap-12 pt-6">
+            <div className="space-y-2">
+              <div className="text-5xl font-display font-bold text-[var(--text-accent)]">
+                <AnimatedCounter end={1} />
+              </div>
+              <div className="text-xs uppercase tracking-widest text-[var(--text-secondary)]">{t.mission.coverageEfficiency}</div>
             </div>
-            <div className="space-y-1">
-              <p className="text-3xl font-black text-white px-2 py-1 bg-white/[0.03] rounded-lg inline-block">02</p>
-              <p className="text-[10px] uppercase tracking-[0.2em] text-white/20 font-bold">{t.mission.activeMonitoring}</p>
+            <div className="space-y-2">
+              <div className="text-5xl font-display font-bold text-[var(--text-accent)]">
+                <AnimatedCounter end={2} />
+              </div>
+              <div className="text-xs uppercase tracking-widest text-[var(--text-secondary)]">{t.mission.activeMonitoring}</div>
             </div>
           </div>
         </div>
 
-        <button
-          className="group flex items-center gap-3 bg-white/5 hover:bg-white hover:text-black transition-all duration-300 px-6 py-3 rounded-full border border-white/5 text-sm font-bold"
+        <MagneticButton
+          className="btn-outline group inline-flex items-center gap-3"
+          strength={0.2}
         >
           {t.mission.learnMore}
-          <ArrowRight size={14} className={`group-hover:translate-x-1 transition-transform ${isRTL ? 'rotate-180 group-hover:-translate-x-1' : ''}`} />
-        </button>
+          <ArrowRight size={14} className="group-hover:translate-x-1 rtl:group-hover:-translate-x-1 transition-transform rtl:rotate-180" />
+        </MagneticButton>
       </div>
-    </section>
+    </section >
+
   );
 }

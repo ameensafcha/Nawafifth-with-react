@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import gsap from 'gsap';
-import { Phone, Menu, X, ChevronRight } from 'lucide-react';
+import { Menu, X, Languages, Sun, Moon, Monitor } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
+import { useTheme } from '../../context/ThemeContext';
 import { Page } from '../../types';
 
 interface NavbarProps {
@@ -11,10 +12,14 @@ interface NavbarProps {
 
 export default function Navbar({ currentPage, setPage }: NavbarProps) {
   const { t, language, setLanguage, isRTL } = useLanguage();
+  const { theme, setTheme, resolvedTheme } = useTheme();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const navRef = useRef<HTMLElement>(null);
   const pillRef = useRef<HTMLDivElement>(null);
   const navItemsRef = useRef<HTMLDivElement>(null);
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
+  const mobileLinksRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     // Throttled scroll listener
@@ -70,12 +75,23 @@ export default function Navbar({ currentPage, setPage }: NavbarProps) {
     return () => clearTimeout(timer);
   }, [currentPage, language]); // Added language to trigger recalculation on toggle
 
+  // Mobile Menu Animation
+  useEffect(() => {
+    if (isMobileMenuOpen && mobileLinksRef.current) {
+      const links = mobileLinksRef.current.children;
+      gsap.fromTo(links,
+        { y: 30, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.6, stagger: 0.1, ease: "power3.out", delay: 0.2 }
+      );
+    }
+  }, [isMobileMenuOpen]);
+
   return (
     <>
       <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out px-6 md:px-12 lg:px-20 ${isScrolled ? 'py-4' : 'py-8'}`}>
         <div
           className={`mx-auto max-w-[1600px] flex items-center justify-between transition-all duration-500 ${isScrolled
-            ? 'bg-brand-black/60 backdrop-blur-xl border border-white/10 rounded-2xl px-6 md:px-10 py-3 shadow-2xl'
+            ? 'bg-[var(--bg-primary)]/60 backdrop-blur-xl border border-[var(--border-primary)] rounded-2xl px-6 md:px-10 py-3 shadow-2xl'
             : 'bg-transparent px-0'
             }`}
         >
@@ -84,20 +100,21 @@ export default function Navbar({ currentPage, setPage }: NavbarProps) {
               src="images/NAWAFITH-LOGO.png"
               alt="Logo"
               className="h-10 w-auto object-contain transition-transform group-hover:scale-105"
+              style={{ filter: 'var(--logo-filter)' }}
             />
           </div>
 
-          <div ref={navItemsRef} className="hidden lg:flex items-center gap-1 p-1 bg-white/[0.03] backdrop-blur-md rounded-full border border-white/5 relative">
+          <div ref={navItemsRef} className="hidden lg:flex items-center gap-1 p-1 bg-[var(--glass-bg)] backdrop-blur-md rounded-full border border-[var(--glass-border)] relative">
             <div
               ref={pillRef}
-              className="absolute inset-y-0.5 left-0 bg-white/10 rounded-full border border-white/10 opacity-0 pointer-events-none"
+              className="absolute inset-y-0.5 left-0 bg-[var(--glass-hover)] rounded-full border border-[var(--glass-border)] opacity-0 pointer-events-none"
             />
             {navItems.map((item) => (
               <button
                 key={item.id}
                 data-id={item.id}
                 onClick={() => setPage(item.id)}
-                className={`px-8 py-2.5 text-[12px] uppercase tracking-[0.2em] font-bold transition-all duration-300 relative z-10 ${currentPage === item.id ? 'text-white' : 'text-white/40 hover:text-white'
+                className={`px-8 py-2.5 text-[12px] uppercase tracking-[0.2em] font-bold transition-all duration-300 relative z-10 ${currentPage === item.id ? 'text-[var(--text-primary)]' : 'text-[var(--text-tertiary)] hover:text-[var(--text-primary)]'
                   }`}
               >
                 {item.label}
@@ -105,45 +122,72 @@ export default function Navbar({ currentPage, setPage }: NavbarProps) {
             ))}
           </div>
 
-          <div className="hidden lg:flex items-center gap-6">
-            <div className="flex items-center gap-4 text-[12px] font-bold text-white/30">
+
+          <div className="hidden lg:flex items-center gap-4 xl:gap-6">
+            <div className="flex items-center gap-2 xl:gap-4 text-[12px] font-bold text-[var(--text-tertiary)]">
               <button
                 onClick={() => setLanguage('ar')}
-                className={`cursor-pointer hover:text-white transition-colors ${language === 'ar' ? 'text-white' : ''}`}
+                aria-label="Switch to Arabic"
+                className={`cursor-pointer hover:text-[var(--text-primary)] transition-colors ${language === 'ar' ? 'text-[var(--text-primary)]' : ''}`}
               >
                 AR
               </button>
               <button
                 onClick={() => setLanguage('en')}
-                className={`cursor-pointer hover:text-white transition-colors ${language === 'en' ? 'text-white' : ''}`}
+                aria-label="Switch to English"
+                className={`px-3 py-1 rounded-full text-xs font-bold transition-all ${language === 'en' ? 'bg-[var(--text-primary)] text-[var(--bg-primary)]' : 'text-[var(--text-tertiary)] hover:text-[var(--text-primary)]'
+                  }`}
               >
                 EN
               </button>
             </div>
+
+            {/* Theme Toggle - Single Button */}
             <button
-              className="bg-white text-black px-8 py-2.5 rounded-full text-[13px] font-bold transition-all hover:bg-gray-200 active:scale-95 shadow-lg"
+              onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
+              aria-label={resolvedTheme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+              className="w-10 h-10 rounded-full bg-[var(--glass-bg)] border border-[var(--glass-border)] flex items-center justify-center text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-[var(--border-accent)] transition-all"
+            >
+              {resolvedTheme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
+            </button>
+            <button
+              className="bg-[var(--text-primary)] text-[var(--bg-primary)] px-6 xl:px-8 py-2 xl:py-2.5 rounded-full text-xs xl:text-[13px] font-bold transition-all hover:opacity-80 active:scale-95 shadow-lg"
             >
               {t.nav.callNow}
             </button>
           </div>
 
-          <button
-            className="lg:hidden w-10 h-10 flex flex-col items-center justify-center gap-1.5"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          >
-            <span className={`w-6 h-0.5 bg-white transition-all ${isMobileMenuOpen ? 'rotate-45 translate-y-2' : ''}`} />
-            <span className={`w-6 h-0.5 bg-white transition-all ${isMobileMenuOpen ? 'opacity-0' : ''}`} />
-            <span className={`w-6 h-0.5 bg-white transition-all ${isMobileMenuOpen ? '-rotate-45 -translate-y-2' : ''}`} />
-          </button>
+          <div className="flex lg:hidden items-center gap-4">
+            {/* Mobile Theme Toggle - Single Button */}
+            <button
+              onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
+              aria-label={resolvedTheme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+              className="w-9 h-9 rounded-full bg-[var(--glass-bg)] border border-[var(--glass-border)] flex items-center justify-center text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-all"
+            >
+              {resolvedTheme === 'dark' ? <Sun size={14} /> : <Moon size={14} />}
+            </button>
+
+            <button
+              className="w-10 h-10 flex flex-col items-center justify-center gap-1.5"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              aria-label="Toggle menu"
+              aria-expanded={isMobileMenuOpen}
+            >
+              <span className={`w-6 h-0.5 bg-[var(--text-primary)] transition-all ${isMobileMenuOpen ? 'rotate-45 translate-y-2' : ''}`} />
+              <span className={`w-6 h-0.5 bg-[var(--text-primary)] transition-all ${isMobileMenuOpen ? 'opacity-0' : ''}`} />
+              <span className={`w-6 h-0.5 bg-[var(--text-primary)] transition-all ${isMobileMenuOpen ? '-rotate-45 -translate-y-2' : ''}`} />
+            </button>
+          </div>
         </div>
       </nav>
 
-      {/* Mobile Menu - Simple CSS transition for performance */}
+      {/* Mobile Menu */}
       <div
-        className={`fixed inset-0 z-[55] bg-brand-black/98 backdrop-blur-2xl lg:hidden flex flex-col items-center justify-center transition-all duration-500 ease-expo ${isMobileMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none translate-y-4'
+        ref={mobileMenuRef}
+        className={`fixed inset-0 z-[55] bg-[var(--bg-primary)]/98 backdrop-blur-2xl lg:hidden flex flex-col items-center justify-center transition-all duration-500 ease-expo ${isMobileMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none translate-y-4'
           }`}
       >
-        <div className="flex flex-col items-center gap-6">
+        <div ref={mobileLinksRef} className="flex flex-col items-center gap-6">
           {navItems.map((item, i) => (
             <button
               key={item.id}
@@ -151,26 +195,26 @@ export default function Navbar({ currentPage, setPage }: NavbarProps) {
                 setPage(item.id);
                 setIsMobileMenuOpen(false);
               }}
-              className={`text-4xl font-bold tracking-tighter font-display transition-colors ${currentPage === item.id ? 'text-white' : 'text-white/20 hover:text-white/40'
+              className={`text-4xl font-bold tracking-tighter font-display transition-colors ${currentPage === item.id ? 'text-[var(--text-primary)]' : 'text-[var(--text-tertiary)] hover:text-[var(--text-secondary)]'
                 }`}
-              style={{ transitionDelay: `${i * 50}ms` }}
             >
               {item.label}
             </button>
           ))}
           <div className="mt-12 flex flex-col items-center gap-6">
-            <button className="bg-white text-black px-10 py-4 rounded-full text-sm font-bold">
+            <button className="bg-[var(--text-primary)] text-[var(--bg-primary)] px-10 py-4 rounded-full text-sm font-bold">
               {t.nav.callNow}
             </button>
-            <div className="flex gap-4 text-[10px] font-bold text-white/30">
-              <button onClick={() => setLanguage('ar')}>ARABIC</button>
-              <button onClick={() => setLanguage('en')}>ENGLISH</button>
+            <div className="flex gap-4 text-[10px] font-bold text-[var(--text-tertiary)]">
+              <button onClick={() => setLanguage('ar')} aria-label="Switch to Arabic">ARABIC</button>
+              <button onClick={() => setLanguage('en')} aria-label="Switch to English">ENGLISH</button>
             </div>
           </div>
         </div>
         <button
           onClick={() => setIsMobileMenuOpen(false)}
-          className="absolute top-8 right-8 text-white/40 hover:text-white"
+          className="absolute top-8 right-8 text-[var(--text-tertiary)] hover:text-[var(--text-primary)]"
+          aria-label="Close menu"
         >
           <X size={32} />
         </button>

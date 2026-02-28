@@ -1,4 +1,15 @@
+import { useLayoutEffect, useRef } from 'react';
+import gsap from 'gsap';
+import { Draggable } from 'gsap/Draggable';
 import { useLanguage } from '../../context/LanguageContext';
+
+// GSAP ko batana padta hai ki hum Draggable use kar rahe hain
+gsap.registerPlugin(Draggable);
+
+// --- YAHAN SE SPEED AUR DELAY SET KAREIN --- //
+const ANIMATION_SPEED = 1; // Slide hone me kitna time lagega (seconds me)
+const PAUSE_DELAY = 5;     // Ek slide chalne ke baad kitni der rukega (seconds me)
+// ------------------------------------------ //
 
 const clientLogos = [
   "https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg",
@@ -8,60 +19,162 @@ const clientLogos = [
   "https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg",
 ];
 
-const displayLogos = [...clientLogos, ...clientLogos];
+// Screen pe khali jagah na bache isliye hum isko 3 baar render karenge drag safety ke liye
+const infiniteLogos = [...clientLogos, ...clientLogos, ...clientLogos];
 
 export default function ClientsCarousel() {
-  const { t, isRTL } = useLanguage();
-  const titleText = t.clients.title;
+  const { t } = useLanguage();
+  const sliderRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useLayoutEffect(() => {
+    let ctx = gsap.context(() => {
+      if (!sliderRef.current || !sliderRef.current.children.length) return;
+
+      const boxes = gsap.utils.toArray('.carousel-card') as HTMLElement[];
+      const boxWidth = boxes[1].offsetLeft - boxes[0].offsetLeft;
+
+      // Ek original set ki total width (Loop banane ke liye)
+      const singleSetWidth = boxWidth * clientLogos.length;
+
+      let currentIndex = 0;
+      let timer: gsap.core.Tween;
+
+      // 1. Fade Up Entrance
+      gsap.fromTo(
+        ".fade-up-element",
+        { y: 50, opacity: 0 },
+        { y: 0, opacity: 1, duration: 1.2, stagger: 0.3, ease: "power3.out" }
+      );
+
+      // 2. Auto Play Logic
+      const startAutoPlay = () => {
+        timer = gsap.delayedCall(PAUSE_DELAY, () => {
+          currentIndex++;
+
+          gsap.to(sliderRef.current, {
+            x: -(currentIndex * boxWidth),
+            duration: ANIMATION_SPEED,
+            ease: "expo.inOut",
+            onComplete: () => {
+              // Agar ek set khatam ho gaya, toh seamlessly zero pe le aao
+              if (currentIndex >= clientLogos.length) {
+                currentIndex = 0;
+                gsap.set(sliderRef.current, { x: 0 });
+              }
+              startAutoPlay(); // Loop continue karo
+            }
+          });
+        });
+      };
+
+      // 3. Draggable Logic (Mouse & Touch)
+      Draggable.create(sliderRef.current, {
+        type: "x",
+        inertia: false, // Free version logic
+        onPress: function () {
+          // Jaise hi user pakde, animation aur timer rok do
+          timer?.kill();
+          gsap.killTweensOf(sliderRef.current);
+        },
+        onDrag: function () {
+          // Seamless Infinite Scroll manually handle kar rahe hain
+          let currentX = this.x;
+          if (currentX > 0) {
+            currentX -= singleSetWidth;
+            gsap.set(sliderRef.current, { x: currentX });
+            this.update();
+          } else if (currentX < -singleSetWidth) {
+            currentX += singleSetWidth;
+            gsap.set(sliderRef.current, { x: currentX });
+            this.update();
+          }
+        },
+        onRelease: function () {
+          // Jaise hi user chhode, nearest card pe snap karo
+          let currentX = this.x;
+
+          if (currentX > 0) currentX -= singleSetWidth;
+          else if (currentX < -singleSetWidth) currentX += singleSetWidth;
+
+          // Pata lagao nearest card kaunsa hai
+          currentIndex = Math.round(Math.abs(currentX) / boxWidth);
+          if (currentIndex >= clientLogos.length) currentIndex = 0;
+
+          const snapX = -(currentIndex * boxWidth);
+
+          // Smoothly snap karke auto-play wapas shuru karo
+          gsap.to(sliderRef.current, {
+            x: snapX,
+            duration: 0.5,
+            ease: "power2.out",
+            onComplete: () => {
+              startAutoPlay();
+            }
+          });
+        }
+      });
+
+      // Initially Auto-play shuru kardo
+      startAutoPlay();
+
+    }, containerRef);
+
+    return () => ctx.revert();
+  }, []);
 
   return (
     <section
-      className="relative py-20 md:py-32 bg-[#050505] overflow-hidden border-y border-white/[0.03]"
-      dir={isRTL ? 'rtl' : 'ltr'}
+      ref={containerRef}
+      className="relative bg-[var(--bg-secondary)] py-20 md:py-28 overflow-hidden border-y border-[var(--border-secondary)]"
     >
-      {/* Refined Background Accents */}
-      <div className="absolute top-1/2 left-0 -translate-y-1/2 w-[300px] md:w-[600px] h-[300px] md:h-[600px] bg-white/[0.015] rounded-full blur-[100px] pointer-events-none"></div>
-      <div className="absolute top-1/2 right-0 -translate-y-1/2 w-[300px] md:w-[600px] h-[300px] md:h-[600px] bg-white/[0.015] rounded-full blur-[100px] pointer-events-none"></div>
+      {/* Background Elements */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,var(--border-primary)_1px,transparent_1px),linear-gradient(to_bottom,var(--border-primary)_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-20"></div>
+      <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-[var(--glow-accent)] rounded-full blur-[120px] animate-pulse pointer-events-none opacity-[0.05]"></div>
+      <div className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-[var(--glow-secondary)] rounded-full blur-[100px] animate-pulse pointer-events-none opacity-[0.05]" style={{ animationDelay: '2s' }}></div>
 
-      <div className="max-w-[1600px] mx-auto px-6 md:px-12 lg:px-20 mb-12 md:mb-16 relative z-20">
-        <div className="flex items-center gap-6">
-          <span className="w-12 md:w-24 h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent"></span>
-          <h2 className="text-[10px] md:text-xs font-display font-medium text-white/40 uppercase tracking-[0.4em] md:tracking-[0.6em]">
-            {titleText}
-          </h2>
-          <span className="flex-grow h-[1px] bg-gradient-to-r from-white/5 to-transparent"></span>
+      <div className="relative z-20">
+        {/* Header Section */}
+        <div className="fade-up-element text-center mb-16 px-4">
+          <div className="inline-flex items-center justify-center gap-3 px-4 py-2 rounded-full border border-[var(--border-secondary)] bg-[var(--glass-bg)] backdrop-blur-sm select-none">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--text-accent)] opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-[var(--text-accent)]"></span>
+            </span>
+            <span className="text-[10px] md:text-xs uppercase tracking-[0.3em] font-bold text-[var(--text-tertiary)]">
+              {t?.clients?.title || "OUR CLIENTS"}
+            </span>
+          </div>
         </div>
-      </div>
 
-      <div className="relative w-full z-20 group">
-        {/* Edge Fade Overlays */}
-        <div className="absolute inset-y-0 left-0 w-16 md:w-48 bg-gradient-to-r from-[#050505] to-transparent z-10 pointer-events-none"></div>
-        <div className="absolute inset-y-0 right-0 w-16 md:w-48 bg-gradient-to-l from-[#050505] to-transparent z-10 pointer-events-none"></div>
-
-        <div
-          className="flex items-center will-change-transform py-4"
-          style={{ 
-            width: 'max-content',
-            animation: isRTL ? 'rtl-marquee 30s linear infinite' : 'marquee 30s linear infinite'
-          }}
-        >
-          {displayLogos.map((logo, index) => (
-            <div key={index} className="flex-none px-4 md:px-8 group/item">
-              <div className="relative w-28 h-16 md:w-44 md:h-24 rounded-xl md:rounded-[2.5rem] border border-white/[0.05] bg-white/[0.01] backdrop-blur-md flex items-center justify-center transition-all duration-700 hover:bg-white/[0.05] hover:border-white/20 active:scale-95">
-                <img
-                  src={logo}
-                  alt="Client Logo"
-                  className="max-h-5 md:max-h-9 w-auto object-contain filter grayscale brightness-200 opacity-20 transition-all duration-700 group-hover/item:grayscale-0 group-hover/item:brightness-100 group-hover/item:opacity-70 group-hover/item:scale-105"
-                />
-                <div className="absolute inset-0 rounded-xl md:rounded-[2.5rem] bg-white/5 opacity-0 group-hover/item:opacity-100 blur-lg transition-opacity duration-700 pointer-events-none"></div>
+        {/* Carousel Container */}
+        <div className="fade-up-element w-full overflow-hidden cursor-grab active:cursor-grabbing">
+          <div
+            ref={sliderRef}
+            // Pointer events none un drag items pe lagana zaroori hai taki image ghosting na ho
+            className="flex gap-8 md:gap-10 w-max items-center px-6 md:px-12 touch-pan-y"
+          >
+            {/* Array ko 3 baar render kar rahe hain infinite smooth drag ke liye */}
+            {infiniteLogos.map((logo, index) => (
+              <div
+                key={index}
+                className="carousel-card group flex-shrink-0"
+              >
+                <div className="relative w-56 h-32 md:w-[320px] md:h-44 p-6 md:p-8 rounded-[2rem] border border-[var(--border-primary)] bg-white dark:bg-[var(--bg-elevated)] backdrop-blur-md flex items-center justify-center transition-all duration-500 hover:scale-[1.02] hover:bg-white dark:hover:bg-[var(--glass-bg)] hover:border-[var(--border-accent)] hover:shadow-[0_20px_40px_-10px_rgba(0,0,0,0.1)] select-none">
+                  <img
+                    src={logo}
+                    alt="Client"
+                    draggable="false" // Image drag ghost issue ko rokne ke liye
+                    className="max-h-12 md:max-h-16 w-auto object-contain transition-all duration-700 filter drop-shadow-md group-hover:scale-110 pointer-events-none brightness-100 dark:brightness-200"
+                  />
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
 
-      {/* Decorative Progress Blur Bottom */}
-      <div className="mt-12 md:mt-20 w-full h-[1px] bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.03),transparent_80%)]"></div>
+      <div className="mt-20 w-full h-px bg-gradient-to-r from-transparent via-[var(--border-primary)] to-transparent opacity-50"></div>
     </section>
   );
 }

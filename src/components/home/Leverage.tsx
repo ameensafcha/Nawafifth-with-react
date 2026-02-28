@@ -3,6 +3,8 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Play, MapPin, ChevronRight, Download } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
+import TiltCard from '../ui/TiltCard';
+import MagneticButton from '../ui/MagneticButton';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -105,113 +107,118 @@ export default function Leverage() {
   ];
 
   return (
-    <section ref={sectionRef} className="relative py-20 md:py-32 bg-[#050505] border-y border-white/[0.03]">
+    <section ref={sectionRef}
+      className="relative py-16 sm:py-20 md:py-28 bg-[var(--bg-primary)] border-b border-[var(--border-secondary)]">
 
-      {/* Reduced Glow Opacity for Performance */}
+      {/* Glow Effects */}
       <div className="absolute top-0 right-0 w-full h-full overflow-hidden pointer-events-none z-0">
-        <div className="absolute top-[20%] right-[10%] w-[400px] h-[400px] bg-emerald-500/[0.03] rounded-full blur-[100px]"></div>
+        <div className="absolute top-[20%] right-[10%] w-[400px] h-[400px] bg-[var(--glow-accent)] rounded-full blur-[120px] opacity-[0.05]"></div>
       </div>
 
-      <div className="max-w-[1440px] mx-auto px-6 md:px-12 lg:px-20 relative z-10">
+      <div className="section-container relative z-10">
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 items-start">
 
           <div
             ref={leftColRef}
-            className={`lg:col-span-6 lg:sticky lg:top-32 space-y-12 ${isRTL ? 'lg:order-2 lg:text-right text-right' : 'lg:order-1 lg:text-left text-left'}`}
+            className="lg:col-span-6 lg:sticky lg:top-32 space-y-12 text-start"
           >
             <div className="leverage-header space-y-8">
               {/* Header */}
               <div className="flex flex-col gap-6">
-                <div className={`flex items-center gap-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                  <span className="w-10 h-px bg-white/20"></span>
-                  <span className="text-[10px] uppercase tracking-[0.5em] font-bold text-white/40 font-mono">
+                <div className="flex items-center gap-4">
+                  <span className="w-10 h-px bg-[var(--text-accent)] opacity-30"></span>
+                  <span className="text-[10px] uppercase tracking-[0.5em] font-bold text-[var(--text-accent)] font-mono">
                     {t.leverage.strategyLabel}
                   </span>
                 </div>
 
                 <div className="flex flex-wrap gap-3">
-                  <div className="px-4 py-2 rounded-full bg-white/[0.03] border border-white/10 flex items-center gap-2">
-                    <div className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></div>
-                    <span className="text-[10px] font-bold text-white/80 uppercase tracking-widest">
+                  <div className="px-4 py-2 rounded-full bg-[var(--glass-bg)] border border-[var(--border-secondary)] flex items-center gap-2">
+                    <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-emerald-500)] animate-pulse"></div>
+                    <span className="text-[10px] font-bold text-[var(--text-secondary)] uppercase tracking-widest">
                       {t.leverage.networkLive}
                     </span>
                   </div>
                 </div>
               </div>
 
-              <h2 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter font-display leading-[0.9]">
-                How to Leverage <br />
-                <span className="italic font-serif font-light text-white/40">Nawafith Ads</span>
+              <h2 className="text-display text-4xl sm:text-5xl md:text-7xl lg:text-8xl text-[var(--text-primary)] leading-[0.9]">
+                {t.leverage.title} <br />
+                <span className="italic font-serif font-light text-[var(--text-accent)] opacity-40">{t.leverage.titlePart2}</span>
               </h2>
 
-              <p className="text-white/30 max-w-lg text-lg font-light leading-relaxed">
+              <p className="text-[var(--text-secondary)] max-w-lg text-lg font-light leading-relaxed">
                 {t.leverage.desc}
               </p>
             </div>
 
             <div
               ref={imageContainerRef}
-              className="rounded-[3rem] overflow-hidden border border-white/5 shadow-2xl relative w-full aspect-[4/3] group bg-zinc-900"
+              className="rounded-[2rem] sm:rounded-[3rem] overflow-hidden border border-[var(--border-primary)] shadow-2xl relative w-full aspect-[4/3] group bg-[var(--bg-elevated)]"
             >
               <img
                 ref={imageRef}
                 src="images/hero3.jpg"
                 alt="Leverage"
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-[1.5s] opacity-70 group-hover:opacity-100"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-[1.5s] opacity-100 transition-opacity"
                 loading="lazy"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
 
               <div
                 ref={badgeRef}
-                className="absolute bottom-10 right-10 bg-black/60 backdrop-blur-xl px-6 py-3 rounded-2xl border border-white/5 flex items-center gap-3 shadow-2xl"
+                className="absolute bottom-10 end-10 bg-black/60 backdrop-blur-xl px-6 py-3 rounded-2xl border border-white/10 flex items-center gap-3 shadow-2xl"
               >
-                <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
-                <span className="text-[10px] text-white/80 font-mono uppercase tracking-widest font-bold">Network Live</span>
+                <div className="w-2 h-2 rounded-full bg-[var(--color-emerald-500)] animate-pulse"></div>
+                <span className="text-[10px] text-[var(--text-primary)] font-mono uppercase tracking-widest font-bold">{t.leverage.networkLive}</span>
               </div>
             </div>
 
-            <button className="group relative flex items-center gap-4 bg-white text-black px-10 py-5 rounded-full font-bold hover:bg-gray-200 transition-all active:scale-95 shadow-xl w-fit">
-              <Download size={18} />
-              <span className="text-sm uppercase tracking-wider">{t.leverage.presentation}</span>
-              <ChevronRight size={16} className={`transition-transform group-hover:translate-x-1 ${isRTL ? 'rotate-180 group-hover:-translate-x-1' : ''}`} />
-            </button>
+            <MagneticButton className="btn-primary group" strength={0.3}>
+              <span className="relative z-10 flex items-center gap-4">
+                <Download size={18} />
+                <span className="text-sm uppercase tracking-wider">{t.leverage.presentation}</span>
+                <ChevronRight size={16} className="transition-transform rtl:rotate-180 group-hover:translate-x-1 rtl:group-hover:-translate-x-1" />
+              </span>
+            </MagneticButton>
           </div>
 
           <div
             ref={cardsBlockRef}
-            className={`lg:col-span-6 flex flex-col gap-10 lg:pt-32 ${isRTL ? 'lg:order-1' : 'lg:order-2'}`}
+            className="lg:col-span-6 flex flex-col gap-10 lg:pt-32"
           >
             {leverageData.map((item, i) => (
-              <div
-                key={i}
-                className="relative bg-white/[0.02] border border-white/5 p-12 md:p-16 rounded-[3rem] overflow-hidden group hover:bg-white/[0.04] transition-all duration-500 shadow-xl"
-              >
-                <div className="absolute -right-4 -top-8 text-[120px] font-black font-display text-white/[0.02] pointer-events-none leading-none select-none italic">
-                  0{i + 1}
-                </div>
-
-                <div className="relative z-10 flex flex-col gap-10">
-                  <div className="w-16 h-16 rounded-2xl bg-white/[0.03] border border-white/5 flex items-center justify-center text-white/40 group-hover:bg-white group-hover:text-black transition-all">
-                    <item.icon size={26} strokeWidth={1.5} />
+              <TiltCard key={i} className="relative w-full" maxTilt={8}>
+                <div
+                  className="relative glass-card p-8 sm:p-12 md:p-16 overflow-hidden group w-full h-full"
+                >
+                  <div className="absolute -end-2 sm:-end-4 -top-4 sm:-top-8 text-[80px] sm:text-[120px] font-black font-display text-[var(--text-accent)] opacity-[0.03] pointer-events-none leading-none select-none italic">
+                    0{i + 1}
                   </div>
 
-                  <div className="space-y-4">
-                    <h3 className="text-3xl md:text-4xl font-bold tracking-tight text-white group-hover:text-emerald-500 transition-colors">
-                      {item.title}
-                    </h3>
-                    <p className="text-white/30 leading-relaxed text-lg font-light max-w-md">
-                      {item.desc}
-                    </p>
+                  <div className="relative z-10 flex flex-col gap-10">
+                    <div className="w-16 h-16 rounded-2xl bg-[var(--glass-bg)] border border-[var(--border-primary)] flex items-center justify-center text-[var(--text-tertiary)] group-hover:bg-[var(--gradient-accent)] group-hover:text-black transition-all">
+                      <item.icon size={26} strokeWidth={1.5} className="text-[var(--text-accent)] group-hover:text-black" />
+                    </div>
+
+                    <div className="space-y-4">
+                      <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-[var(--text-primary)] group-hover:text-[var(--text-accent)] transition-colors">
+                        {item.title}
+                      </h3>
+                      <p className="text-[var(--text-tertiary)] leading-relaxed text-base sm:text-lg font-light max-w-md">
+                        {item.desc}
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
+              </TiltCard>
             ))}
           </div>
 
         </div>
       </div>
     </section>
+
   );
 }

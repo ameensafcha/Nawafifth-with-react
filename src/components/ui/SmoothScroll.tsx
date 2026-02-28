@@ -13,7 +13,7 @@ export default function SmoothScroll({ children }: SmoothScrollProps) {
     useEffect(() => {
         // Initialize Lenis
         const lenis = new Lenis({
-            duration: 1.2,
+            duration: 1.0,
             easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
             orientation: 'vertical',
             gestureOrientation: 'vertical',
@@ -28,11 +28,17 @@ export default function SmoothScroll({ children }: SmoothScrollProps) {
         // Synchronize Lenis with GSAP ScrollTrigger
         lenis.on('scroll', ScrollTrigger.update);
 
-        gsap.ticker.add((time) => {
+        const rafCallback = (time: number) => {
             lenis.raf(time * 1000);
-        });
+        };
 
+        gsap.ticker.add(rafCallback);
         gsap.ticker.lagSmoothing(0);
+
+        ScrollTrigger.config({
+            limitCallbacks: true,
+            ignoreMobileResize: true,
+        });
 
         // Refresh ScrollTrigger on page changes (handled by Lenis)
         const refreshScrollTrigger = () => {
@@ -43,7 +49,7 @@ export default function SmoothScroll({ children }: SmoothScrollProps) {
 
         return () => {
             lenis.destroy();
-            gsap.ticker.remove(lenis.raf);
+            gsap.ticker.remove(rafCallback);
             window.removeEventListener('resize', refreshScrollTrigger);
         };
     }, []);
