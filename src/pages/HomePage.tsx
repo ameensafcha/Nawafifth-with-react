@@ -7,13 +7,18 @@ import Solutions from '../components/home/Solutions';
 import Leverage from '../components/home/Leverage';
 import FooterImage from '../components/home/FooterImage';
 import { useLanguage } from '../context/LanguageContext';
+import { Page } from '../types';
 
-export default function HomePage() {
+interface HomePageProps {
+  setPage: (page: Page) => void;
+}
+
+export default function HomePage({ setPage }: HomePageProps) {
   const { t, isRTL } = useLanguage();
 
   return (
     <div className={`page-wrapper ${isRTL ? 'rtl' : 'ltr'}`}>
-      <Hero />
+      <Hero setPage={setPage} />
       <Clients />
       <Mission />
       <MarqueeBar />
@@ -21,6 +26,7 @@ export default function HomePage() {
         title={t.cta.boostTitle}
         subtitle={t.cta.boostSubtitle}
         buttonText={t.cta.boostButton}
+        setPage={setPage}
       />
       <Solutions />
       <Leverage />
@@ -28,6 +34,7 @@ export default function HomePage() {
         title={t.cta.elevateTitle}
         subtitle={t.cta.elevateSubtitle}
         buttonText={t.cta.exploreButton}
+        setPage={setPage}
       />
       <FooterImage />
     </div>

@@ -5,6 +5,7 @@ import { useLanguage } from '../../context/LanguageContext';
 import TextType from '../ui/TextType';
 import SplitText from '../ui/SplitText';
 import MagneticButton from '../ui/MagneticButton';
+import { Page } from '../../types';
 
 const marqueeData = [
   "Dynamic Displays", "Real-time Analytics", "Geo-Targeting",
@@ -13,7 +14,11 @@ const marqueeData = [
 
 const displayItems = [...marqueeData, ...marqueeData];
 
-export default function Hero() {
+interface HeroProps {
+  setPage: (page: Page) => void;
+}
+
+export default function Hero({ setPage }: HeroProps) {
   const { t, isRTL } = useLanguage();
   const scope = useRef(null);
   const buttonRef = useRef(null);
@@ -21,30 +26,21 @@ export default function Hero() {
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({
-        defaults: { ease: "expo.out", duration: 1.2 }
+        defaults: { ease: "expo.out", duration: 1.5 }
       });
 
-      // Reset & Initial States
-      gsap.set(".hero-content > *", { x: isRTL ? 30 : -30, opacity: 0 });
-      gsap.set(".video-container", { scale: 0.95, opacity: 0 });
-
       // Timeline Sequence
-      tl.to(".hero-content > *", {
-        x: 0,
-        opacity: 1,
-        stagger: 0.08,
-        ease: "power4.out"
-      })
-        .to(".video-container", {
-          scale: 1,
-          opacity: 1,
-          duration: 1.2
-        }, "-=0.8")
-        .to(".video-container", {
-          scale: 1,
-          opacity: 1,
-          duration: 1.2
-        }, "-=0.8");
+      tl.fromTo(".hero-content > *",
+        { opacity: 0, x: isRTL ? 100 : -100, filter: "blur(10px)" },
+        { opacity: 1, x: 0, filter: "blur(0px)", stagger: 0.1 },
+        0.2
+      );
+
+      tl.fromTo(".video-container",
+        { opacity: 0, scale: 1.1, clipPath: "inset(0 100% 0 0)" },
+        { opacity: 1, scale: 1, clipPath: "inset(0 0% 0 0)", duration: 2, ease: "power4.inOut" },
+        0
+      );
 
     }, scope);
 
@@ -66,7 +62,7 @@ export default function Hero() {
           {/* Left Column - Content */}
           <div className="hero-content text-start">
             {/* Badge: liveCampaigns + liveSubtitle */}
-            <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-[var(--glass-bg)] border border-[var(--border-secondary)] mb-8 overflow-hidden">
+            {/* <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-[var(--glass-bg)] border border-[var(--border-secondary)] mb-8 overflow-hidden">
               <span className="w-2 h-2 rounded-full bg-[var(--color-emerald-500)] animate-pulse"></span>
               <span className="text-[10px] md:text-xs font-bold uppercase tracking-widest text-[var(--text-secondary)]">
                 {t.hero.liveCampaigns}
@@ -74,7 +70,7 @@ export default function Hero() {
               <span className="text-[9px] md:text-[10px] text-[var(--text-tertiary)] border-l border-[var(--border-primary)] pl-3">
                 {t.hero.liveSubtitle}
               </span>
-            </div>
+            </div> */}
 
             {/* welcomeTo + TextType animation */}
             <div className="flex gap-2 text-base sm:text-lg md:text-xl text-[var(--text-tertiary)] mb-4 uppercase tracking-[0.3em] font-light">
@@ -122,13 +118,14 @@ export default function Hero() {
               <MagneticButton
                 className="btn-primary group shadow-[0_0_40px_var(--glow-accent)] hover:shadow-[0_8px_30px_var(--glow-accent)]"
                 strength={0.4}
+                onClick={() => setPage('about')}
               >
                 <span className="relative z-10 flex items-center gap-3">
                   {t.hero.scheduleCall}
                   <ChevronRight className="w-5 h-5 rtl:rotate-180 rtl:group-hover:-translate-x-1 group-hover:translate-x-1 transition-transform" />
                 </span>
               </MagneticButton>
-              <MagneticButton
+              {/* <MagneticButton
                 className="btn-outline group"
                 strength={0.3}
               >
@@ -136,7 +133,7 @@ export default function Hero() {
                   {t.hero.explore}
                   <ChevronRight className="w-5 h-5 rtl:rotate-180 rtl:group-hover:-translate-x-1 group-hover:translate-x-1 transition-transform" />
                 </span>
-              </MagneticButton>
+              </MagneticButton> */}
             </div>
           </div>
 

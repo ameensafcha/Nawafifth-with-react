@@ -75,7 +75,7 @@ function AppContent() {
         </a>
         <Navbar currentPage={page} setPage={setPage} />
         <main id="main-content" ref={mainRef} className="flex-1 opacity-0">
-          {page === 'home' && <HomePage key="home" />}
+          {page === 'home' && <HomePage setPage={setPage} />}
           {page === 'about' && <AboutPage key="about" />}
           {page === 'formats' && <FormatsPage key="formats" />}
           {page === 'contact' && <ContactPage key="contact" />}

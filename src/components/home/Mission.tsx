@@ -206,13 +206,13 @@ export default function Mission() {
           </div>
         </div>
 
-        <MagneticButton
+        {/* <MagneticButton
           className="btn-outline group inline-flex items-center gap-3"
           strength={0.2}
         >
           {t.mission.learnMore}
           <ArrowRight size={14} className="group-hover:translate-x-1 rtl:group-hover:-translate-x-1 transition-transform rtl:rotate-180" />
-        </MagneticButton>
+        </MagneticButton> */}
       </div>
     </section >
 

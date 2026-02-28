@@ -6,6 +6,7 @@ interface MagneticButtonProps extends React.ButtonHTMLAttributes<HTMLButtonEleme
     strength?: number;
     className?: string;
     magneticContent?: boolean;
+    onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
 export default function MagneticButton({

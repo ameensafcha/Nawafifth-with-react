@@ -20,6 +20,7 @@ export default function AboutPage() {
     const ctx = gsap.context(() => {
       // Intro animations
       const tl = gsap.timeline({
+        defaults: { ease: "expo.out", duration: 1.5 },
         scrollTrigger: {
           trigger: mainRef.current,
           start: "top 80%",
@@ -28,14 +29,15 @@ export default function AboutPage() {
       });
 
       tl.fromTo([titleRef.current, descRef.current?.children],
-        { opacity: 0, y: 30 },
-        { opacity: 1, y: 0, duration: 0.8, stagger: 0.1, ease: "power2.out" }
+        { opacity: 0, x: isRTL ? 100 : -100, filter: "blur(10px)" },
+        { opacity: 1, x: 0, filter: "blur(0px)", stagger: 0.1 },
+        0.2
       );
 
       tl.fromTo(imageRef.current,
-        { opacity: 0, scale: 0.98 },
-        { opacity: 1, scale: 1, duration: 1, ease: "power2.out" },
-        "-=0.6"
+        { opacity: 0, scale: 1.1, clipPath: "inset(0 100% 0 0)" },
+        { opacity: 1, scale: 1, clipPath: "inset(0 0% 0 0)", duration: 2, ease: "power4.inOut" },
+        0
       );
 
       // Mission section animations

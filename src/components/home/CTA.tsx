@@ -7,16 +7,20 @@ import MagneticButton from '../ui/MagneticButton';
 
 gsap.registerPlugin(ScrollTrigger);
 
+import { Page } from '../../types';
+
 interface CTAProps {
   title: string;
   subtitle: string;
   buttonText: string;
+  setPage: (page: Page) => void;
 }
 
 export default function CTA({
   title,
   subtitle,
-  buttonText
+  buttonText,
+  setPage
 }: CTAProps) {
   const { isRTL } = useLanguage();
 
@@ -130,6 +134,7 @@ export default function CTA({
           <MagneticButton
             strength={0.5}
             className="relative group p-1"
+            onClick={() => setPage('contact')}
           >
             <div className="absolute inset-0 bg-white dark:bg-[var(--text-primary)] text-black rounded-full transition-all duration-300 group-hover:scale-105" />
 
