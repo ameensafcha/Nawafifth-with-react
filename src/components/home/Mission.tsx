@@ -166,7 +166,7 @@ export default function Mission() {
           </div>
 
           <h2 className="text-display text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter font-display leading-[0.85] text-[var(--text-primary)]">
-            {t.mission.pioneeringTitle} <br />
+            {t.mission.title} <br />
             <span className="italic font-serif font-light text-[var(--text-accent)] opacity-50">{t.mission.mobilePart}</span>
           </h2>
 
@@ -177,8 +177,8 @@ export default function Mission() {
               {t.mission.description2}{' '}
               <span className="font-semibold text-[var(--text-accent)]">{t.mission.onCar}</span>
               {t.mission.description3}{' '}
-              <span className="font-semibold">{t.mission.impactful}</span> &amp;{' '}
-              <span className="font-semibold">{t.mission.measurable}</span>.
+              {/* <span className="font-semibold">{t.mission.impactful}</span> &amp;{' '}
+              <span className="font-semibold">{t.mission.measurable}</span>. */}
             </p>
             <p ref={quoteRef} className="text-[var(--text-tertiary)]">
               {t.mission.description4}

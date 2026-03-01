@@ -120,6 +120,8 @@ export interface FormatTranslations {
   feat2Desc: string;
   feat3: string;
   feat3Desc: string;
+  feat4: string;
+  feat4Desc: string;
   exploreBtn: string;
   tagDynamic: string;
   tagFixed: string;
@@ -171,6 +173,7 @@ export interface LeverageTranslations {
   title: string;
   titlePart2: string;
   desc: string;
+  desc2:string;
   realtime: string;
   realtimeDesc: string;
   strategic: string;
@@ -189,6 +192,14 @@ export interface ClientsTranslations {
   title: string;
 }
 
+export interface OfferingsTranslations {
+  title: string;
+  desc: string;
+  card1Title: string;
+  card1Desc: string;
+  getInTouch: string;
+}
+
 export interface Translations {
   nav: NavTranslations;
   hero: HeroTranslations;
@@ -202,4 +213,5 @@ export interface Translations {
   footer: FooterTranslations;
   leverage: LeverageTranslations;
   footerImage: FooterImageTranslations;
+  offerings: OfferingsTranslations;
 }

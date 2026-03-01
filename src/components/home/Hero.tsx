@@ -118,7 +118,7 @@ export default function Hero({ setPage }: HeroProps) {
               <MagneticButton
                 className="btn-primary group shadow-[0_0_40px_var(--glow-accent)] hover:shadow-[0_8px_30px_var(--glow-accent)]"
                 strength={0.4}
-                onClick={() => setPage('about')}
+                onClick={() => setPage('contact')}
               >
                 <span className="relative z-10 flex items-center gap-3">
                   {t.hero.scheduleCall}
@@ -141,8 +141,8 @@ export default function Hero({ setPage }: HeroProps) {
           <div className="video-container w-full">
             <div className="relative rounded-3xl md:rounded-[2.5rem] overflow-hidden border border-[var(--border-primary)] bg-[var(--bg-elevated)] shadow-2xl">
               <div className="aspect-video relative">
-                <video autoPlay muted loop playsInline preload="auto" className="w-full h-full object-cover">
-                  <source src="video/1.mp4" type="video/mp4" />
+                <video autoPlay muted loop playsInline preload="auto" poster="https://res.cloudinary.com/dpgaxuazo/video/upload/q_auto,f_auto,so_0/v1772366932/1_1_esy6bv.jpg" className="w-full h-full object-cover bg-[var(--bg-primary)]">
+                  <source src="https://res.cloudinary.com/dpgaxuazo/video/upload/q_auto,f_auto/v1772366932/1_1_esy6bv.mp4" type="video/mp4" />
                 </video>
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
               </div>

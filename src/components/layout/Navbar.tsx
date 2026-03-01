@@ -151,6 +151,7 @@ export default function Navbar({ currentPage, setPage }: NavbarProps) {
               {resolvedTheme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
             </button>
             <button
+              onClick={() => setPage('contact')}
               className="bg-[var(--text-primary)] text-[var(--bg-primary)] px-6 xl:px-8 py-2 xl:py-2.5 rounded-full text-xs xl:text-[13px] font-bold transition-all hover:opacity-80 active:scale-95 shadow-lg"
             >
               {t.nav.callNow}
@@ -210,7 +211,13 @@ export default function Navbar({ currentPage, setPage }: NavbarProps) {
             </button>
           ))}
           <div className="mt-12 flex flex-col items-center gap-6">
-            <button className="bg-[var(--text-primary)] text-[var(--bg-primary)] px-10 py-4 rounded-full text-sm font-bold">
+            <button
+              onClick={() => {
+                setPage('contact');
+                setIsMobileMenuOpen(false);
+              }}
+              className="bg-[var(--text-primary)] text-[var(--bg-primary)] px-10 py-4 rounded-full text-sm font-bold"
+            >
               {t.nav.callNow}
             </button>
           </div>

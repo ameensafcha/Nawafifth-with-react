@@ -24,6 +24,7 @@ const IMAGES = {
   FEATURE_IMPACT: 'images/advertising-1of4.png',  // Feature 1
   FEATURE_RESOLUTION: 'images/advertising-format-20f4.png', // Feature 2
   FEATURE_WEATHERPROOF: 'images/advertising-4of4.png', // Feature 3
+  FEATURE_FLEXIBILITY: 'images/home-2.jpg',
 
   // NEW GIF FORMAT
   AD_GIF: 'advertize-format.gif',
@@ -171,13 +172,14 @@ export default function FormatsPage() {
 
       {/* 3. FEATURE SHOWCASE - Alternating Sections & Zigzag */}
       <div className="flex flex-col">
-        <div className="section-container pt-20 md:pt-32 pb-8 text-center lg:text-start">
+        {/* <div className="section-container pt-20 md:pt-32 pb-8 text-center lg:text-start">
           <h2 className="text-display text-4xl sm:text-5xl md:text-8xl text-[var(--text-primary)] opacity-20">{t.formats.formatsTitle}</h2>
-        </div>
+        </div> */}
         {[
           { title: t.formats.feat1, desc: t.formats.feat1Desc, img: IMAGES.FEATURE_IMPACT },
           { title: t.formats.feat2, desc: t.formats.feat2Desc, img: IMAGES.FEATURE_RESOLUTION, reverse: true },
           { title: t.formats.feat3, desc: t.formats.feat3Desc, img: IMAGES.FEATURE_WEATHERPROOF },
+          { title: t.formats.feat4, desc: t.formats.feat4Desc, img: IMAGES.FEATURE_FLEXIBILITY, reverse: true },
         ].map((feat, i) => (
           <section
             key={i}
@@ -196,10 +198,10 @@ export default function FormatsPage() {
                   </div>
                   <h3 className="text-3xl sm:text-4xl md:text-6xl font-black tracking-tighter leading-[0.9] text-[var(--text-primary)]">{feat.title}</h3>
                   <p className="text-base sm:text-lg text-[var(--text-secondary)] leading-relaxed font-light">{feat.desc}</p>
-                  <button className="btn-outline group inline-flex items-center gap-4 text-sm sm:text-base">
-                    <span>{t.formats.exploreBtn}</span>
-                    <ArrowRight size={16} className="transition-transform duration-500 rtl:rotate-180 group-hover:translate-x-2 rtl:group-hover:-translate-x-2" />
-                  </button>
+                  {/* <button className="btn-outline group inline-flex items-center gap-4 text-sm sm:text-base">
+                      <span>{t.formats.exploreBtn}</span>
+                      <ArrowRight size={16} className="transition-transform duration-500 rtl:rotate-180 group-hover:translate-x-2 rtl:group-hover:-translate-x-2" />
+                    </button> */}
                 </div>
 
                 <div className={`relative rounded-[2rem] sm:rounded-[2.5rem] md:rounded-[3rem] group overflow-hidden border border-[var(--border-primary)] shadow-2xl aspect-[4/3] sm:aspect-[16/9] bg-[var(--bg-elevated)] order-2 ${feat.reverse ? 'lg:order-1' : 'lg:order-2'}`}>

@@ -52,7 +52,7 @@ export default function Footer({ setPage }: FooterProps) {
               <li><button onClick={() => setPage('about')} className="text-[var(--text-tertiary)] hover:text-[var(--text-accent)] transition-colors text-sm font-light uppercase tracking-wider">{t.footer.about}</button></li>
               <li><button onClick={() => setPage('formats')} className="text-[var(--text-tertiary)] hover:text-[var(--text-accent)] transition-colors text-sm font-light uppercase tracking-wider">{t.footer.formats}</button></li>
               <li><button onClick={() => setPage('contact')} className="text-[var(--text-tertiary)] hover:text-[var(--text-accent)] transition-colors text-sm font-light uppercase tracking-wider">{t.footer.contact}</button></li>
-              <li><a href="#" className="text-[var(--text-tertiary)] hover:text-[var(--text-accent)] transition-colors text-sm font-light uppercase tracking-wider">{t.footer.legal}</a></li>
+              {/* <li><a href="#" className="text-[var(--text-tertiary)] hover:text-[var(--text-accent)] transition-colors text-sm font-light uppercase tracking-wider">{t.footer.legal}</a></li> */}
             </ul>
           </div>
 
@@ -65,7 +65,7 @@ export default function Footer({ setPage }: FooterProps) {
               </li>
               <li className="flex items-center gap-4 text-[var(--text-tertiary)] text-sm font-light group">
                 <Mail size={16} className="text-[var(--text-accent)] opacity-40 group-hover:opacity-100 transition-opacity shrink-0" />
-                <a href="mailto:Nawafithadvsa@gmail.com" className="hover:text-[var(--text-primary)] transition-colors">Nawafithadvsa@gmail.com</a>
+                <a href="mailto:Nawafith-ooh-adv@gmail.com" className="hover:text-[var(--text-primary)] transition-colors">Nawafith-ooh-adv@gmail.com</a>
               </li>
               <li className="flex items-center gap-4 text-[var(--text-tertiary)] text-sm font-light group">
                 <Phone size={16} className="text-[var(--text-accent)] opacity-40 group-hover:opacity-100 transition-opacity shrink-0" />
@@ -95,10 +95,10 @@ export default function Footer({ setPage }: FooterProps) {
           <p className="hover:text-[var(--text-primary)] transition-colors">
             {t.footer.copyright}
           </p>
-          <div className="flex gap-8">
+          {/* <div className="flex gap-8">
             <a href="#" className="hover:text-[var(--text-primary)] transition-colors">{t.footer.privacyPolicy}</a>
             <a href="#" className="hover:text-[var(--text-primary)] transition-colors">{t.footer.termsOfService}</a>
-          </div>
+          </div> */}
         </div>
       </div>
 

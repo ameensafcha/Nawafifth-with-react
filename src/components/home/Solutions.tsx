@@ -78,7 +78,7 @@ export default function Solutions() {
             <p className="text-[var(--text-tertiary)] text-sm md:text-base leading-relaxed font-light">
               {t.solutions.synergyDesc}
             </p>
-            <button
+            {/* <button
               onClick={() => document.getElementById('formats')?.scrollIntoView({ behavior: 'smooth' })}
               className="group flex items-center gap-4 text-xs uppercase tracking-widest font-bold text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
             >
@@ -86,7 +86,7 @@ export default function Solutions() {
                 <ChevronRight size={16} className="rtl:rotate-180" />
               </span>
               {t.solutions.explore}
-            </button>
+            </button> */}
           </div>
         </div>
 
@@ -137,7 +137,7 @@ export default function Solutions() {
 
                   <div className="space-y-3 relative z-10">
                     <h3 className="text-xl md:text-2xl font-bold text-[var(--text-primary)]">{item.title}</h3>
-                    <p className="text-[var(--text-tertiary)] text-sm leading-relaxed">{item.desc}</p>
+                    {/* <p className="text-[var(--text-tertiary)] text-sm leading-relaxed">{item.desc}</p> */}
                   </div>
                 </div>
               </TiltCard>

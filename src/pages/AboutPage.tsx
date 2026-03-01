@@ -1,12 +1,21 @@
-import { useLayoutEffect, useRef } from 'react';
+import React, { useLayoutEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Quote } from 'lucide-react';
+import { Quote, Car } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
+import MagneticButton from '../components/ui/MagneticButton';
+import CTA from '../components/home/CTA';
+import { Page } from '../types';
+
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function AboutPage() {
+interface AboutPageProps {
+  setPage: (page: Page) => void;
+  key?: React.Key;
+}
+
+export default function AboutPage({ setPage }: AboutPageProps) {
   const { t, isRTL } = useLanguage();
 
   const mainRef = useRef<HTMLDivElement>(null);
@@ -15,6 +24,7 @@ export default function AboutPage() {
   const imageRef = useRef<HTMLDivElement>(null);
   const missionRef = useRef<HTMLDivElement>(null);
   const missionImgRef = useRef<HTMLDivElement>(null);
+  const offeringsRef = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
@@ -66,6 +76,22 @@ export default function AboutPage() {
           ease: "power2.out",
           scrollTrigger: {
             trigger: missionImgRef.current,
+            start: "top 85%",
+            once: true
+          }
+        }
+      );
+
+      gsap.fromTo(offeringsRef.current?.children,
+        { opacity: 0, y: 30 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          stagger: 0.1,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: offeringsRef.current,
             start: "top 85%",
             once: true
           }
@@ -167,6 +193,58 @@ export default function AboutPage() {
             </div>
           </div>
         </div>
+      </section>
+
+      <section className="bg-[var(--bg-primary)] py-20 lg:py-28 relative border-t border-[var(--border-secondary)]">
+        <div ref={offeringsRef} className="section-container flex flex-col items-center justify-center text-center space-y-12">
+
+          <div className="space-y-6 max-w-4xl mx-auto">
+            <h2 className="text-display text-4xl sm:text-5xl md:text-6xl text-[var(--text-primary)]">
+              {t.offerings.title}
+            </h2>
+            <p className="text-[var(--text-secondary)] leading-relaxed text-base md:text-lg font-light max-w-3xl mx-auto">
+              {t.offerings.desc}
+            </p>
+          </div>
+
+          <div className="flex justify-center w-full mt-8">
+            <div className="glass-card group p-8 sm:p-10 rounded-xl max-w-lg w-full text-start flex flex-col gap-6 relative overflow-hidden transition-colors hover:bg-[var(--glass-hover)] shadow-2xl border border-[var(--border-secondary)] bg-[var(--bg-elevated)]">
+              <div className="absolute -inset-20 bg-[var(--text-primary)] opacity-[0.02] blur-[40px] pointer-events-none group-hover:opacity-[0.05] transition-opacity"></div>
+
+              <div className="flex flex-col sm:flex-row sm:items-center gap-4 border-b border-[var(--border-secondary)] pb-6 relative z-10">
+                <div className="flex flex-col items-center justify-center shrink-0 w-16 h-16 rounded-xl bg-[var(--bg-primary)] border border-[var(--border-primary)] shadow-sm">
+                  <div className="text-[10px] font-bold border-2 border-[var(--text-primary)] rounded px-1 mb-0.5 leading-none py-0.5">AD</div>
+                  <Car className="w-7 h-7 text-[var(--text-primary)]" strokeWidth={1.5} />
+                </div>
+                <h3 className="text-2xl sm:text-3xl font-bold text-[var(--text-primary)] leading-tight tracking-tight">
+                  {t.offerings.card1Title}
+                </h3>
+              </div>
+
+              <p className="text-[var(--text-secondary)] font-light leading-relaxed text-base relative z-10">
+                {t.offerings.card1Desc}
+              </p>
+            </div>
+          </div>
+
+          <div className="pt-8 w-full flex justify-center">
+            <MagneticButton>
+              <button onClick={() => setPage('contact')} className="inline-flex items-center justify-center bg-[var(--bg-elevated)] text-[var(--text-primary)] px-8 py-4 text-sm font-semibold tracking-[0.2em] uppercase border border-[var(--border-primary)] hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] transition-all duration-300 gap-3 group shadow-sm w-full sm:w-auto">
+                <span>{t.offerings.getInTouch}</span>
+                <span className="rtl:rotate-180 transform transition-transform group-hover:translate-x-1 rtl:group-hover:-translate-x-1 font-bold text-lg">›</span>
+              </button>
+            </MagneticButton>
+          </div>
+
+        </div>
+      </section>
+      <section>
+        <CTA
+          title={t.cta.elevateTitle}
+          subtitle={t.cta.elevateSubtitle}
+          buttonText={t.cta.exploreButton}
+          setPage={setPage}
+        />
       </section>
     </div>
   );

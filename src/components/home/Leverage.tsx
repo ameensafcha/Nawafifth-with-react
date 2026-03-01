@@ -151,6 +151,9 @@ export default function Leverage() {
               <p className="text-[var(--text-secondary)] max-w-lg text-lg font-light leading-relaxed">
                 {t.leverage.desc}
               </p>
+              <p className="text-[var(--text-tertiary)] max-w-lg text-base font-light leading-relaxed">
+                {t.leverage.desc2}
+              </p>
             </div>
 
             <div
@@ -176,11 +179,11 @@ export default function Leverage() {
             </div>
 
             <MagneticButton className="btn-primary group" strength={0.3}>
-              <span className="relative z-10 flex items-center gap-4">
+              <a href="https://drive.google.com/uc?export=download&id=1ugLD86_NkJzrA-dtgOTYn5Z8p9WItaaq" target="_blank" rel="noopener noreferrer" className="relative z-10 flex items-center gap-4 w-full h-full">
                 <Download size={18} />
                 <span className="text-sm uppercase tracking-wider">{t.leverage.presentation}</span>
                 <ChevronRight size={16} className="transition-transform rtl:rotate-180 group-hover:translate-x-1 rtl:group-hover:-translate-x-1" />
-              </span>
+              </a>
             </MagneticButton>
           </div>
 
@@ -206,9 +209,9 @@ export default function Leverage() {
                       <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-[var(--text-primary)] group-hover:text-[var(--text-accent)] transition-colors">
                         {item.title}
                       </h3>
-                      <p className="text-[var(--text-tertiary)] leading-relaxed text-base sm:text-lg font-light max-w-md">
+                      {/* <p className="text-[var(--text-tertiary)] leading-relaxed text-base sm:text-lg font-light max-w-md">
                         {item.desc}
-                      </p>
+                      </p> */}
                     </div>
                   </div>
                 </div>

@@ -85,7 +85,7 @@ export default function MagneticButton({
             {...props}
         >
             {magneticContent ? (
-                <span ref={contentRef} className="relative z-10 flex items-center justify-center pointer-events-none will-change-transform w-full h-full">
+                <span ref={contentRef} className="relative z-10 flex items-center justify-center will-change-transform w-full h-full">
                     {children}
                 </span>
             ) : (

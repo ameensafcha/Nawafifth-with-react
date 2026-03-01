@@ -12,11 +12,10 @@ const PAUSE_DELAY = 5;     // Ek slide chalne ke baad kitni der rukega (seconds 
 // ------------------------------------------ //
 
 const clientLogos = [
-  "https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg",
-  "https://upload.wikimedia.org/wikipedia/commons/5/51/IBM_logo.svg",
-  "https://upload.wikimedia.org/wikipedia/commons/9/96/Microsoft_logo_%282012%29.svg",
-  "https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg",
-  "https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg",
+  "images/clients/2.png",
+  "images/clients/3.png",
+  "images/clients/4.png",
+  
 ];
 
 // Screen pe khali jagah na bache isliye hum isko 3 baar render karenge drag safety ke liye
@@ -152,20 +151,20 @@ export default function ClientsCarousel() {
           <div
             ref={sliderRef}
             // Pointer events none un drag items pe lagana zaroori hai taki image ghosting na ho
-            className="flex gap-8 md:gap-10 w-max items-center px-6 md:px-12 touch-pan-y"
+            className="flex gap-8  md:gap-10 w-max items-center px-6 md:px-12 touch-pan-y"
           >
             {/* Array ko 3 baar render kar rahe hain infinite smooth drag ke liye */}
             {infiniteLogos.map((logo, index) => (
               <div
                 key={index}
-                className="carousel-card group flex-shrink-0"
+                className="carousel-card group  flex-shrink-0"
               >
                 <div className="relative w-56 h-32 md:w-[320px] md:h-44 p-6 md:p-8 rounded-[2rem] border border-[var(--border-primary)] bg-white dark:bg-[var(--bg-elevated)] backdrop-blur-md flex items-center justify-center transition-all duration-500 hover:scale-[1.02] hover:bg-white dark:hover:bg-[var(--glass-bg)] hover:border-[var(--border-accent)] hover:shadow-[0_20px_40px_-10px_rgba(0,0,0,0.1)] select-none">
                   <img
                     src={logo}
                     alt="Client"
                     draggable="false" // Image drag ghost issue ko rokne ke liye
-                    className="max-h-12 md:max-h-16 w-auto object-contain transition-all duration-700 filter drop-shadow-md group-hover:scale-110 pointer-events-none brightness-100 dark:brightness-200"
+                    className="max-h-12 md:max-h-16 w-auto object-contain transition-all duration-700  filter drop-shadow-md group-hover:scale-110 pointer-events-none brightness-100 dark:brightness-200"
                   />
                 </div>
               </div>
