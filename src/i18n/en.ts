@@ -24,6 +24,11 @@ export const en: Translations = {
     nawafithAdvertising: 'Nawafith Advertising',
     badge: 'Live Campaigns',
     cta: 'SCHEDULE A CALL',
+    taglines: [
+      { number: '01', text: 'Lead your brand toward widespread reach' },
+      { number: '02', text: 'Dominate the scene with your brand' },
+      { number: '03', text: 'Take your brand to broader horizons' },
+    ],
   },
   clients: {
     title: 'Clients Worked With',
@@ -71,6 +76,9 @@ export const en: Translations = {
     boostTitle: 'Ready to Boost Your Brand Visibility?',
     boostSubtitle: 'Schedule a free call today to explore how Nawafith can drive your brand forward.',
     boostButton: 'SCHEDULE A CALL',
+
+
+    
     elevateTitle: 'Ready to Elevate Your Advertising?',
     elevateSubtitle: 'Partner with Nawafith today and take your brand to the next level. Let’s create impactful, data-driven campaigns that deliver real results. Contact us now to get started!',
     exploreButton: 'EXPLORE SOLUTIONS',

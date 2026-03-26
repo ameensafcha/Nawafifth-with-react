@@ -10,6 +10,11 @@ export interface NavTranslations {
   callNow: string;
 }
 
+export interface Tagline {
+  number: string;
+  text: string;
+}
+
 export interface HeroTranslations {
   welcomeTo: string;
   title: string;
@@ -26,6 +31,7 @@ export interface HeroTranslations {
   nawafithAdvertising: string;
   badge: string;
   cta: string;
+  taglines: Tagline[];
 }
 
 export interface MissionTranslations {
