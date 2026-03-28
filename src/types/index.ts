@@ -148,6 +148,9 @@ export interface ContactTranslations {
   phone: string;
   message: string;
   submit: string;
+  submitting: string;
+  successMessage: string;
+  errorMessage: string;
   faqTitle: string;
   faqs: FAQ[],
   knowledgeBaseLabel: string;

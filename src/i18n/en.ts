@@ -140,6 +140,9 @@ export const en: Translations = {
     phone: 'Phone',
     message: 'Message',
     submit: 'Submit',
+    submitting: 'Sending...',
+    successMessage: 'Message sent successfully!',
+    errorMessage: 'Failed to send message. Please try again.',
     faqTitle: 'Getting Started FAQ',
     faqs: [
       { q: 'How do I get started with Nawafith Advertising?', a: 'Getting started with Nawafith Advertising is easy! Simply reach out to our team through our contact page or by phone, and we\’ll schedule an initial consultation. During this consultation, we\’ll discuss your advertising goals, select the best vehicle format (e.g., wraps or LED screens), and tailor a solution that fits your needs.' },

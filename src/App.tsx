@@ -10,6 +10,7 @@ import ContactPage from './pages/ContactPage';
 import SmoothScroll from './components/ui/SmoothScroll';
 import { Page } from './types';
 import gsap from 'gsap';
+import { Toaster } from 'react-hot-toast';
 
 function AppContent() {
   // Initialize page from hash or default to home
@@ -68,6 +69,20 @@ function AppContent() {
 
   return (
     <SmoothScroll>
+      <Toaster position="top-center" toastOptions={{
+        style: {
+          background: 'var(--bg-elevated)',
+          color: 'var(--text-primary)',
+          border: '1px solid var(--border-primary)',
+          borderRadius: '12px',
+        },
+        success: {
+          iconTheme: {
+            primary: '#10b981',
+            secondary: '#fff',
+          },
+        },
+      }} />
       <div className="min-h-screen flex flex-col" dir={isRTL ? 'rtl' : 'ltr'}>
         <div ref={overlayRef} className="fixed inset-0 bg-[var(--bg-primary)] z-[60] pointer-events-none" />
         <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[var(--text-accent)] focus:text-black focus:rounded-lg">
