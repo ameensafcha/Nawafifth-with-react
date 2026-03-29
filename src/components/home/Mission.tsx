@@ -70,14 +70,14 @@ export default function Mission() {
     return () => ctx.revert();
   }, [isRTL]);
 
-  // Throttled mouse tracking logic
-  const mousePos = useRef({ x: 0, y: 0 });
+  const cachedRect = useRef<DOMRect | null>(null);
   const handleMouseMove = (e: React.MouseEvent) => {
-    if (!imageWrapperRef.current || !imgRef.current || !dataOverlayRef.current) return;
+    if (!imgRef.current || !dataOverlayRef.current) return;
 
-    const { left, top, width, height } = imageWrapperRef.current.getBoundingClientRect();
-    const x = (e.clientX - left) / width - 0.5;
-    const y = (e.clientY - top) / height - 0.5;
+    const rect = cachedRect.current;
+    if (!rect) return;
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
 
     // Direct GSAP manipulation is efficient, but we can limit the update frequency
     // GSAP's quickSetter is even better for performance
@@ -110,6 +110,9 @@ export default function Mission() {
   };
 
   const handleMouseEnter = () => {
+    if (imageWrapperRef.current) {
+      cachedRect.current = imageWrapperRef.current.getBoundingClientRect();
+    }
     gsap.to(imgRef.current, { filter: "brightness(1)", duration: 0.4 });
   };
 

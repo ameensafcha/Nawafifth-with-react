@@ -27,7 +27,7 @@ const IMAGES = {
   FEATURE_FLEXIBILITY: 'images/home-2.jpg',
 
   // NEW GIF FORMAT
-  AD_GIF: 'advertize-format.gif',
+  AD_VIDEO: 'screen video.mp4',
 };
 
 export default function FormatsPage() {
@@ -40,19 +40,19 @@ export default function FormatsPage() {
     {
       title: t.formats.live,
       desc: t.formats.liveDesc,
-      img: IMAGES.AD_GIF,
+      img: IMAGES.AD_VIDEO,
       tag: t.formats.tagDynamic,
     },
     {
       title: t.formats.static,
       desc: t.formats.staticDesc,
-      img: IMAGES.AD_GIF,
+      img: IMAGES.AD_VIDEO,
       tag: t.formats.tagFixed,
     },
     {
       title: t.formats.geo,
       desc: t.formats.geoDesc,
-      img: IMAGES.AD_GIF,
+      img: IMAGES.AD_VIDEO,
       tag: t.formats.tagTargeted,
     },
   ];
@@ -205,12 +205,23 @@ export default function FormatsPage() {
                 </div>
 
                 <div className={`relative rounded-[2rem] sm:rounded-[2.5rem] md:rounded-[3rem] group overflow-hidden border border-[var(--border-primary)] shadow-2xl aspect-[4/3] sm:aspect-[16/9] bg-[var(--bg-elevated)] order-2 ${feat.reverse ? 'lg:order-1' : 'lg:order-2'}`}>
-                  <img
-                    src={feat.img}
-                    alt={feat.title}
-                    className="w-full h-full object-cover transition-all duration-1000 group-hover:scale-105"
-                    loading="lazy"
-                  />
+                  {feat.img.endsWith('.mp4') || feat.img.endsWith('.webm') ? (
+                    <video
+                      src={feat.img}
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      className="w-full h-full object-cover transition-all duration-1000 group-hover:scale-105"
+                    />
+                  ) : (
+                    <img
+                      src={feat.img}
+                      alt={feat.title}
+                      className="w-full h-full object-cover transition-all duration-1000 group-hover:scale-105"
+                      loading="lazy"
+                    />
+                  )}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
                 </div>
               </div>

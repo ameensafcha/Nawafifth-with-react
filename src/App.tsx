@@ -1,13 +1,15 @@
-import { useState, useEffect, useLayoutEffect, useRef } from 'react';
+import { useState, useEffect, useLayoutEffect, useRef, lazy, Suspense } from 'react';
 import { LanguageProvider, useLanguage } from './context/LanguageContext';
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
 import BackToTop from './components/ui/BackToTop';
 import HomePage from './pages/HomePage';
-import AboutPage from './pages/AboutPage';
-import FormatsPage from './pages/FormatsPage';
-import ContactPage from './pages/ContactPage';
 import SmoothScroll from './components/ui/SmoothScroll';
+import PageSkeleton from './components/ui/PageSkeleton';
+
+const AboutPage = lazy(() => import('./pages/AboutPage'));
+const FormatsPage = lazy(() => import('./pages/FormatsPage'));
+const ContactPage = lazy(() => import('./pages/ContactPage'));
 import { Page } from './types';
 import gsap from 'gsap';
 import { Toaster } from 'react-hot-toast';
@@ -91,9 +93,11 @@ function AppContent() {
         <Navbar currentPage={page} setPage={setPage} />
         <main id="main-content" ref={mainRef} className="flex-1 opacity-0">
           {page === 'home' && <HomePage setPage={setPage} />}
-          {page === 'about' && <AboutPage key="about" setPage={setPage} />}
-          {page === 'formats' && <FormatsPage key="formats" />}
-          {page === 'contact' && <ContactPage key="contact" />}
+          <Suspense fallback={<PageSkeleton />}>
+            {page === 'about' && <AboutPage key="about" setPage={setPage} />}
+            {page === 'formats' && <FormatsPage key="formats" />}
+            {page === 'contact' && <ContactPage key="contact" />}
+          </Suspense>
         </main>
         <Footer setPage={setPage} />
         <BackToTop />

@@ -65,11 +65,11 @@ export default function Footer({ setPage }: FooterProps) {
               </li>
               <li className="flex items-center gap-4 text-[var(--text-tertiary)] text-sm font-light group">
                 <Mail size={16} className="text-[var(--text-accent)] opacity-40 group-hover:opacity-100 transition-opacity shrink-0" />
-                <a href="mailto:Nawafith-ooh-adv@gmail.com" className="hover:text-[var(--text-primary)] transition-colors">Nawafith-ooh-adv@gmail.com</a>
+                <a href="mailto:info@nawafith-adv.com" className="hover:text-[var(--text-primary)] transition-colors">info@nawafith-adv.com</a>
               </li>
               <li className="flex items-center gap-4 text-[var(--text-tertiary)] text-sm font-light group">
                 <Phone size={16} className="text-[var(--text-accent)] opacity-40 group-hover:opacity-100 transition-opacity shrink-0" />
-                <span className="font-mono">+966 --- --- ---</span>
+                <span className="font-mono">+966533327176</span>
               </li>
             </ul>
           </div>
@@ -103,7 +103,7 @@ export default function Footer({ setPage }: FooterProps) {
       </div>
 
       {/* Decorative Text Wrapper */}
-      <div className="absolute bottom-[-2%] left-1/2 -translate-x-1/2 text-[15vw] sm:text-[18vw] font-black text-[var(--text-accent)] opacity-[0.2] dark:opacity-[0.04] font-display pointer-events-none whitespace-nowrap select-none tracking-tighter transition-all duration-300">
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 text-[15vw] sm:text-[18vw] font-black text-[var(--text-accent)] opacity-[0.35] dark:opacity-[0.06] font-display pointer-events-none whitespace-nowrap select-none tracking-tighter transition-opacity duration-300">
         NAWAFITH
       </div>
     </footer>

@@ -23,8 +23,11 @@ export default function MagneticButton({
         const button = buttonRef.current;
         if (!button) return;
 
+        let cachedRect: DOMRect | null = null;
+        const handleMouseEnter = () => { cachedRect = button.getBoundingClientRect(); };
+
         const handleMouseMove = (e: MouseEvent) => {
-            const rect = button.getBoundingClientRect();
+            const rect = cachedRect ?? button.getBoundingClientRect();
             const x = e.clientX - rect.left - rect.width / 2;
             const y = e.clientY - rect.top - rect.height / 2;
 
@@ -69,10 +72,12 @@ export default function MagneticButton({
             }
         };
 
+        button.addEventListener('mouseenter', handleMouseEnter);
         button.addEventListener('mousemove', handleMouseMove);
         button.addEventListener('mouseleave', handleMouseLeave);
 
         return () => {
+            button.removeEventListener('mouseenter', handleMouseEnter);
             button.removeEventListener('mousemove', handleMouseMove);
             button.removeEventListener('mouseleave', handleMouseLeave);
         };

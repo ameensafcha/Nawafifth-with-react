@@ -118,16 +118,26 @@ export default function InfiniteCarousel({ items }: InfiniteCarouselProps) {
                         >
                             <div className="group relative h-full rounded-[2rem] overflow-hidden border border-[var(--border-primary)] bg-[var(--bg-elevated)] transition-all duration-700 hover:border-[var(--border-accent)] shadow-lg">
 
-                                {/* GIF/Image Container */}
-                                {/* Yahan halki si padding (p-4) add ki hai taaki edges pe touch na ho */}
+                                {/* Video/Image Container */}
                                 <div className="h-48 md:h-64 w-full bg-black/5 flex items-center justify-center p-4">
-                                    <img
-                                        src={item.img || CUSTOM_DEFAULT_GIF}
-                                        alt={item.title}
-                                        draggable="false"
-                                        // Size 50% se badha kar 80% kar diya hai
-                                        className="max-w-[80%] max-h-[80%] object-contain transition-transform duration-1000 group-hover:scale-110 pointer-events-none"
-                                    />
+                                    {(item.img || '').endsWith('.mp4') || (item.img || '').endsWith('.webm') ? (
+                                        <video
+                                            src={item.img}
+                                            autoPlay
+                                            loop
+                                            muted
+                                            playsInline
+                                            draggable={false}
+                                            className="max-w-[80%] max-h-[80%] object-contain transition-transform duration-1000 group-hover:scale-110 pointer-events-none"
+                                        />
+                                    ) : (
+                                        <img
+                                            src={item.img || CUSTOM_DEFAULT_GIF}
+                                            alt={item.title}
+                                            draggable={false}
+                                            className="max-w-[80%] max-h-[80%] object-contain transition-transform duration-1000 group-hover:scale-110 pointer-events-none"
+                                        />
+                                    )}
                                 </div>
 
                                 {/* Text Content Area */}

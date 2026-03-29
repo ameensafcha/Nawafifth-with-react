@@ -152,9 +152,9 @@ export const en: Translations = {
       { q: 'Do you offer geo-targeted advertising?', a: 'Yes, we offer geo-targeting through our LED screen advertising format. This means we can deliver specific messages to certain locations, times of day, or demographics, ensuring your advertising is highly relevant to the audience in each area.' },
     ],
     knowledgeBaseLabel: 'Knowledge Base',
-    phoneValue: '+123-456-7890',
+    phoneValue: '+966533327176',
     addressValue: 'Khobar, Saudi Arabia',
-    emailValue: 'Nawafithadvsa@gmail.com',
+    emailValue: 'info@nawafith-adv.com',
   },
   footer: {
     desc: 'At Nawafith, we are proud to be a leading advertising company operating in Saudi Arabia, aligning our services with the ambitious goals of Vision 2030. Our mission is to support businesses in unlocking their potential through innovative, data-driven advertising solutions tailored to the evolving Saudi market.',

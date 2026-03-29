@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, useMemo, ReactNode } from 'react';
 
 type Theme = 'light' | 'dark' | 'system';
 
@@ -46,8 +46,10 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
         return () => mediaQuery.removeEventListener('change', updateResolvedTheme);
     }, [theme]);
 
+    const value = useMemo(() => ({ theme, setTheme, resolvedTheme }), [theme, resolvedTheme]);
+
     return (
-        <ThemeContext.Provider value={{ theme, setTheme, resolvedTheme }}>
+        <ThemeContext.Provider value={value}>
             {children}
         </ThemeContext.Provider>
     );
