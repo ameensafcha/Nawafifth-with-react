@@ -103,7 +103,7 @@ export default function Footer({ setPage }: FooterProps) {
       </div>
 
       {/* Decorative Text Wrapper */}
-      <div className="absolute bottom-[-2%] left-1/2 -translate-x-1/2 text-[15vw] sm:text-[18vw] font-black text-[var(--text-accent)] opacity-[0.06] dark:opacity-[0.02] font-display pointer-events-none whitespace-nowrap select-none tracking-tighter transition-all duration-300">
+      <div className="absolute bottom-[-2%] left-1/2 -translate-x-1/2 text-[15vw] sm:text-[18vw] font-black text-[var(--text-accent)] opacity-[0.2] dark:opacity-[0.04] font-display pointer-events-none whitespace-nowrap select-none tracking-tighter transition-all duration-300">
         NAWAFITH
       </div>
     </footer>
