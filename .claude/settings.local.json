@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -o \"console\\\\.\\\\\\(log\\\\|error\\\\|warn\\\\|debug\\\\\\)\" dist/assets/*.js)"
+    ]
+  }
+}
